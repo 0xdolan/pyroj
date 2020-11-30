@@ -11,7 +11,7 @@ Welcome to **Kurdish Calendar** - a small **_Python_** library for converting Gr
 
   for python 3 in Linux:
 
-  `pip3 install kurdish_calendar`
+  `pip3 install kurdish-calendar`
 
   or
 
@@ -100,7 +100,7 @@ print("Abbreviated WEEKDAY:", CAL.hefte(abbr=True))
 If you have questions about the python library **Kurdish calendar** module, or run into problems, or if you want to contribute in any way, feel free to reach out to me via below links:
 
 - **[GitHub](https://github.com/dolanskurd)**
-- **[PyPI](https://pypi.org/project/kurdish_calendar/)**
+- **[PyPI](https://pypi.org/project/kurdish-calendar/)**
 - **[Twitter](http://www.twitter.com/dolanskurd)**
 - **E-mail: [dolanskurd@mail.com](mailto:dolanskurd@mail.com)**
 
