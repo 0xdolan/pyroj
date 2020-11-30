@@ -7,7 +7,7 @@ Welcome to **Kurdish Calendar** - a small **_Python_** library for converting Gr
 
   How to install the module:
 
-  `pip install kurdish_calendar`
+  `pip install kurdish-calendar`
 
   for python 3 in Linux:
 
@@ -15,7 +15,7 @@ Welcome to **Kurdish Calendar** - a small **_Python_** library for converting Gr
 
   or
 
-  `python3 -m pip install kurdish_calendar`
+  `python3 -m pip install kurdish-calendar`
 
   Install the package using the setup.py script:
   First cd into the root directory where setup.py is located, then install via below command:
@@ -33,7 +33,7 @@ Welcome to **Kurdish Calendar** - a small **_Python_** library for converting Gr
 ### Get the Kurdish date
 
 ```python
-import calendar_ku
+from kurdish_calendar import calendar_ku
 
 # make an instance from the class with Gregorian date
 CAL = calendar_ku.Rojjmer(2020, 11, 30)
@@ -53,7 +53,7 @@ print(CAL.ku_date(solar=True))
 ### Get the Kurdish date - Only year, month or day
 
 ```python
-import calendar_ku
+from kurdish_calendar import calendar_ku
 
 # make an instance from the class with Gregorian date
 CAL = calendar_ku.Rojjmer(2020, 11, 30)
@@ -76,7 +76,7 @@ print("DAY:", CAL.ku_date().day)
 ### Get the Kurdish weekday
 
 ```python
-import calendar_ku
+from kurdish_calendar import calendar_ku
 
 # make an instance from the class with Gregorian date
 CAL = calendar_ku.Rojjmer(2020, 11, 30)
