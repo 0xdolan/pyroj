@@ -81,34 +81,23 @@ class Rojjmer:
         return result
 
     # Convert Gregorian and Solar date the Kurdish date
-    def to_kurdish(self, whole_year, solar=False):
+    def to_kurdish(self, solar=False):
 
         """Convert Gregorian and Solar date the Kurdish date"""
 
         if solar == False:
-            ku_date = self.whole_year
-        elif solar == True:
             kurdish_year = self.shamsi_date.year + 1321
-            # if self.whole_year.year == self.is_leap:
-            #     # kurdish_year = self.whole_year.year + 620 + 700
-            # else:
-            #     kurdish_year = self.whole_year.year + 621 + 700
+            ku_date = JalaliDate(
+                kurdish_year, self.shamsi_date.month, self.shamsi_date.day
+            )
+
+        elif solar == True:
+            kurdish_year = self.whole_year.year + 1321
             ku_date = JalaliDate(
                 kurdish_year, self.whole_year.month, self.whole_year.day
             )
 
         return ku_date
-
-    # # Getting the Kurdish year
-    # def ku_year(self):
-
-    #     """Getting the Kurdish year"""
-
-    #     if self.shamsi_year == self.is_leap:
-    #         kurdish_year = self.shamsi_year + 620 + 700
-    #     else:
-    #         kurdish_year = self.shamsi_year + 621 + 700
-    #     return kurdish_year
 
     # Convert Kurdish date to Gregorian date
     def to_gregorian(self, whole_year):

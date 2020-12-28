@@ -33,60 +33,102 @@ Welcome to **Kurdish Calendar** - a small **_Python_** library for converting Gr
 ### Get the Kurdish date
 
 ```python
-from kurdish_calendar import calendar_ku
+from kurdish_calendar import rojjmer
 
 # make an instance from the class with Gregorian date
-CAL = calendar_ku.Rojjmer(2020, 11, 30)
-print(CAL.ku_date(solar=False))
+CAL = rojjmer.Rojjmer(2020, 12, 28)
+print(CAL.to_kurdish(solar=False))
 
 # Output:
-# 2720-09-10
+# 2720-10-08
 
 # make an instance from the class with Solar date
-CAL = calendar_ku.Rojjmer(1399, 9, 10)
-print(CAL.ku_date(solar=True))
+CAL = rojjmer.Rojjmer(1399, 10, 8)
+print(CAL.to_kurdish(solar=True))
 
 # Output:
-# 2720-09-10
+# 2720-10-08
 ```
 
 ### Get the Kurdish date - Only year, month or day
 
 ```python
-from kurdish_calendar import calendar_ku
+from kurdish_calendar import rojjmer
 
 # make an instance from the class with Gregorian date
-CAL = calendar_ku.Rojjmer(2020, 11, 30)
+CAL = rojjmer.Rojjmer(2020, 12, 28)
 
 # Get only the year
-print("YEAR:", CAL.ku_date().year)
+print("YEAR:", CAL.to_kurdish().year)
 
 # Get only the month
-print("MONTH:", CAL.ku_date().month)
+print("MONTH:", CAL.to_kurdish().month)
 
 # Get only the day
-print("DAY:", CAL.ku_date().day)
+print("DAY:", CAL.to_kurdish().day)
 
 # Output:
 # YEAR: 2720
-# MONTH: 9
-# DAY: 10
+# MONTH: 10
+# DAY: 8
 ```
 
-### Get the Kurdish weekday
+### Get the Kurdish Weekday (in Arabic-based and Latin-based)
 
 ```python
-from kurdish_calendar import calendar_ku
+from kurdish_calendar import rojjmer
 
 # make an instance from the class with Gregorian date
-CAL = calendar_ku.Rojjmer(2020, 11, 30)
+CAL = rojjmer.Rojjmer(2020, 12, 28)
 
 print("WEEKDAY:", CAL.hefte())
-print("Abbreviated WEEKDAY:", CAL.hefte(abbr=True))
-
 # Output:
 # WEEKDAY: دووشەممە
+
+print("Abbreviated WEEKDAY:", CAL.hefte(abbr=False, latin=False))
+# Output:
+# Abbreviated WEEKDAY: دووشەممە
+
+
+print("Abbreviated WEEKDAY:", CAL.hefte(abbr=True, latin=False))
+# Output:
 # Abbreviated WEEKDAY: د
+
+
+print("Abbreviated WEEKDAY:", CAL.hefte(abbr=True, latin=True))
+# Output:
+# Abbreviated WEEKDAY: D
+
+
+print("Abbreviated WEEKDAY:", CAL.hefte(abbr=False, latin=True))
+# Output:
+# Abbreviated WEEKDAY: Dûşemme
+
+```
+
+### Get the Kurdish Month Names (in Arabic-based and Latin-based)
+
+```python
+
+# make an instance from the class with Gregorian date
+CAL = rojjmer.Rojjmer(2021, 3, 21)
+
+print("Month Name:", CAL.month_name())
+# Output:
+# Month Name: خاکەلێوە
+
+print("Month Name:", CAL.month_name(second_name=True))
+# Output:
+# Month Name: نەورۆز
+
+print("Month Name:", CAL.month_name(second_name=False, latin=True))
+# Output:
+# Month Name: Xakelêwe
+
+print("Month Name:", CAL.month_name(second_name=True, latin=True))
+# Output:
+# Month Name: Newroz
+
 ```
 
 ## To-Do List
