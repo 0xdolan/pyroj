@@ -7,15 +7,15 @@ Welcome to **Rojjmer (Kurdish Calendar)** - a small **_Python_** library for con
 
   How to install the module:
 
-  `pip install kurdish-calendar`
+  `pip install pyroj`
 
   for python 3 in Linux:
 
-  `pip3 install kurdish-calendar`
+  `pip3 install pyroj`
 
   or
 
-  `python3 -m pip install kurdish-calendar`
+  `python3 -m pip install pyroj`
 
   Install the package using the setup.py script:
   First cd into the root directory where setup.py is located, then install via below command:
@@ -33,7 +33,7 @@ Welcome to **Rojjmer (Kurdish Calendar)** - a small **_Python_** library for con
 ### Get the Kurdish date
 
 ```python
-from kurdish_calendar import rojjmer
+from pyroj import rojjmer
 
 # make an instance from the class with Gregorian date
 CAL = rojjmer.Rojjmer(2020, 12, 28)
@@ -53,7 +53,7 @@ print(CAL.to_kurdish(solar=True))
 ### Get the Kurdish date - Only year, month or day
 
 ```python
-from kurdish_calendar import rojjmer
+from pyroj import rojjmer
 
 # make an instance from the class with Gregorian date
 CAL = rojjmer.Rojjmer(2020, 12, 28)
@@ -76,7 +76,7 @@ print("DAY:", CAL.to_kurdish().day)
 ### Get the Kurdish Weekday (in Arabic-based and Latin-based)
 
 ```python
-from kurdish_calendar import rojjmer
+from pyroj import rojjmer
 
 # make an instance from the class with Gregorian date
 CAL = rojjmer.Rojjmer(2020, 12, 28)
