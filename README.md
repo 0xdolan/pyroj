@@ -85,9 +85,9 @@ print("WEEKDAY:", CAL.hefte())
 # Output:
 # WEEKDAY: دووشەممە
 
-print("Abbreviated WEEKDAY:", CAL.hefte(abbr=False, latin=False))
+print("WEEKDAY:", CAL.hefte(abbr=False, latin=False))
 # Output:
-# Abbreviated WEEKDAY: دووشەممە
+# WEEKDAY: دووشەممە
 
 
 print("Abbreviated WEEKDAY:", CAL.hefte(abbr=True, latin=False))
@@ -100,9 +100,9 @@ print("Abbreviated WEEKDAY:", CAL.hefte(abbr=True, latin=True))
 # Abbreviated WEEKDAY: D
 
 
-print("Abbreviated WEEKDAY:", CAL.hefte(abbr=False, latin=True))
+print("WEEKDAY:", CAL.hefte(abbr=False, latin=True))
 # Output:
-# Abbreviated WEEKDAY: Dûşemme
+# WEEKDAY: Dûşemme
 
 ```
 
@@ -117,7 +117,8 @@ print("Month Name:", CAL.month_name())
 # Output:
 # Month Name: خاکەلێوە
 
-print("Month Name:", CAL.month_name(second_name=True))
+# Those months have two names, will be accessible via second_name parameter to be True
+print("Month Name (second name):", CAL.month_name(second_name=True))
 # Output:
 # Month Name: نەورۆز
 
@@ -125,7 +126,8 @@ print("Month Name:", CAL.month_name(second_name=False, latin=True))
 # Output:
 # Month Name: Xakelêwe
 
-print("Month Name:", CAL.month_name(second_name=True, latin=True))
+# Those months have two names, will be accessible via second_name parameter to be True
+print("Month Name (second name):", CAL.month_name(second_name=True, latin=True))
 # Output:
 # Month Name: Newroz
 
