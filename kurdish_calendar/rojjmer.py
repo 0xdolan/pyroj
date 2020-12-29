@@ -100,83 +100,149 @@ class Rojjmer:
         return ku_date
 
     # Convert Kurdish date to Gregorian date
-    def to_gregorian(self, whole_year):
+    def to_gregorian(self):
 
         """Convert Kurdish date to Gregorian date"""
 
-        da = ""
+        roj = JalaliDate(self.year, self.month, self.day)
 
-        return da
+        return roj.to_gregorian()
 
     # Kurdish WeekDays Names
-    def hefte(self, abbr=False, latin=False):
+    def hefte(self, abbr=False, latin=False, solar=False):
 
         """Kurdish WeekDays Names"""
+        if solar == False:
+            roj = self.whole_year
+            if roj.weekday() == 5:
+                if abbr == False and latin == False:
+                    roji_hefte = self.weekDays[0]
+                elif abbr == True and latin == False:
+                    roji_hefte = self.weekDays[0][0]
+                elif abbr == False and latin == True:
+                    roji_hefte = self.weekDays_latin[0]
+                elif abbr == True and latin == True:
+                    roji_hefte = self.weekDays_latin[0][0]
+            elif roj.weekday() == 6:
+                if abbr == False and latin == False:
+                    roji_hefte = self.weekDays[1]
+                elif abbr == True and latin == False:
+                    roji_hefte = self.weekDays[1][0]
+                elif abbr == False and latin == True:
+                    roji_hefte = self.weekDays_latin[1]
+                elif abbr == True and latin == True:
+                    roji_hefte = self.weekDays_latin[1][0]
+            elif roj.weekday() == 0:
+                if abbr == False and latin == False:
+                    roji_hefte = self.weekDays[2]
+                elif abbr == True and latin == False:
+                    roji_hefte = self.weekDays[2][0]
+                elif abbr == False and latin == True:
+                    roji_hefte = self.weekDays_latin[2]
+                elif abbr == True and latin == True:
+                    roji_hefte = self.weekDays_latin[2][0]
+            elif roj.weekday() == 1:
+                if abbr == False and latin == False:
+                    roji_hefte = self.weekDays[3]
+                elif abbr == True and latin == False:
+                    roji_hefte = self.weekDays[3][0]
+                elif abbr == False and latin == True:
+                    roji_hefte = self.weekDays_latin[3]
+                elif abbr == True and latin == True:
+                    roji_hefte = self.weekDays_latin[3][0]
+            elif roj.weekday() == 2:
+                if abbr == False and latin == False:
+                    roji_hefte = self.weekDays[4]
+                elif abbr == True and latin == False:
+                    roji_hefte = self.weekDays[4][0]
+                elif abbr == False and latin == True:
+                    roji_hefte = self.weekDays_latin[4]
+                elif abbr == True and latin == True:
+                    roji_hefte = self.weekDays_latin[4][0]
+            elif roj.weekday() == 3:
+                if abbr == False and latin == False:
+                    roji_hefte = self.weekDays[5]
+                elif abbr == True and latin == False:
+                    roji_hefte = self.weekDays[5][0]
+                elif abbr == False and latin == True:
+                    roji_hefte = self.weekDays_latin[5]
+                elif abbr == True and latin == True:
+                    roji_hefte = self.weekDays_latin[5][0]
+            elif roj.weekday() == 4:
+                if abbr == False and latin == False:
+                    roji_hefte = self.weekDays[6]
+                elif abbr == True and latin == False:
+                    roji_hefte = self.weekDays[6][0] + "ـ"
+                elif abbr == False and latin == True:
+                    roji_hefte = self.weekDays_latin[6]
+                elif abbr == True and latin == True:
+                    roji_hefte = self.weekDays_latin[6][0]
+        elif solar == True:
+            roj = JalaliDate(self.year, self.month, self.day)
+            if roj.weekday() == 5:
+                if abbr == False and latin == False:
+                    roji_hefte = self.weekDays[5]
+                elif abbr == True and latin == False:
+                    roji_hefte = self.weekDays[5][0]
+                elif abbr == False and latin == True:
+                    roji_hefte = self.weekDays_latin[5]
+                elif abbr == True and latin == True:
+                    roji_hefte = self.weekDays_latin[5][0]
+            elif roj.weekday() == 6:
+                if abbr == False and latin == False:
+                    roji_hefte = self.weekDays[6]
+                elif abbr == True and latin == False:
+                    roji_hefte = self.weekDays[6][0]
+                elif abbr == False and latin == True:
+                    roji_hefte = self.weekDays_latin[6]
+                elif abbr == True and latin == True:
+                    roji_hefte = self.weekDays_latin[6][0]
+            elif roj.weekday() == 0:
+                if abbr == False and latin == False:
+                    roji_hefte = self.weekDays[0]
+                elif abbr == True and latin == False:
+                    roji_hefte = self.weekDays[0][0]
+                elif abbr == False and latin == True:
+                    roji_hefte = self.weekDays_latin[0]
+                elif abbr == True and latin == True:
+                    roji_hefte = self.weekDays_latin[0][0]
+            elif roj.weekday() == 1:
+                if abbr == False and latin == False:
+                    roji_hefte = self.weekDays[1]
+                elif abbr == True and latin == False:
+                    roji_hefte = self.weekDays[1][0]
+                elif abbr == False and latin == True:
+                    roji_hefte = self.weekDays_latin[1]
+                elif abbr == True and latin == True:
+                    roji_hefte = self.weekDays_latin[1][0]
+            elif roj.weekday() == 2:
+                if abbr == False and latin == False:
+                    roji_hefte = self.weekDays[2]
+                elif abbr == True and latin == False:
+                    roji_hefte = self.weekDays[2][0]
+                elif abbr == False and latin == True:
+                    roji_hefte = self.weekDays_latin[2]
+                elif abbr == True and latin == True:
+                    roji_hefte = self.weekDays_latin[2][0]
+            elif roj.weekday() == 3:
+                if abbr == False and latin == False:
+                    roji_hefte = self.weekDays[3]
+                elif abbr == True and latin == False:
+                    roji_hefte = self.weekDays[3][0]
+                elif abbr == False and latin == True:
+                    roji_hefte = self.weekDays_latin[3]
+                elif abbr == True and latin == True:
+                    roji_hefte = self.weekDays_latin[3][0]
+            elif roj.weekday() == 4:
+                if abbr == False and latin == False:
+                    roji_hefte = self.weekDays[4]
+                elif abbr == True and latin == False:
+                    roji_hefte = self.weekDays[4][0] + "ـ"
+                elif abbr == False and latin == True:
+                    roji_hefte = self.weekDays_latin[4]
+                elif abbr == True and latin == True:
+                    roji_hefte = self.weekDays_latin[4][0]
 
-        roj = self.whole_year
-        if roj.weekday() == 5:
-            if abbr == False and latin == False:
-                roji_hefte = self.weekDays[0]
-            elif abbr == True and latin == False:
-                roji_hefte = self.weekDays[0][0]
-            elif abbr == False and latin == True:
-                roji_hefte = self.weekDays_latin[0]
-            elif abbr == True and latin == True:
-                roji_hefte = self.weekDays_latin[0][0]
-        elif roj.weekday() == 6:
-            if abbr == False and latin == False:
-                roji_hefte = self.weekDays[1]
-            elif abbr == True and latin == False:
-                roji_hefte = self.weekDays[1][0]
-            elif abbr == False and latin == True:
-                roji_hefte = self.weekDays_latin[1]
-            elif abbr == True and latin == True:
-                roji_hefte = self.weekDays_latin[1][0]
-        elif roj.weekday() == 0:
-            if abbr == False and latin == False:
-                roji_hefte = self.weekDays[2]
-            elif abbr == True and latin == False:
-                roji_hefte = self.weekDays[2][0]
-            elif abbr == False and latin == True:
-                roji_hefte = self.weekDays_latin[2]
-            elif abbr == True and latin == True:
-                roji_hefte = self.weekDays_latin[2][0]
-        elif roj.weekday() == 1:
-            if abbr == False and latin == False:
-                roji_hefte = self.weekDays[3]
-            elif abbr == True and latin == False:
-                roji_hefte = self.weekDays[3][0]
-            elif abbr == False and latin == True:
-                roji_hefte = self.weekDays_latin[3]
-            elif abbr == True and latin == True:
-                roji_hefte = self.weekDays_latin[3][0]
-        elif roj.weekday() == 2:
-            if abbr == False and latin == False:
-                roji_hefte = self.weekDays[4]
-            elif abbr == True and latin == False:
-                roji_hefte = self.weekDays[4][0]
-            elif abbr == False and latin == True:
-                roji_hefte = self.weekDays_latin[4]
-            elif abbr == True and latin == True:
-                roji_hefte = self.weekDays_latin[4][0]
-        elif roj.weekday() == 3:
-            if abbr == False and latin == False:
-                roji_hefte = self.weekDays[5]
-            elif abbr == True and latin == False:
-                roji_hefte = self.weekDays[5][0]
-            elif abbr == False and latin == True:
-                roji_hefte = self.weekDays_latin[5]
-            elif abbr == True and latin == True:
-                roji_hefte = self.weekDays_latin[5][0]
-        elif roj.weekday() == 4:
-            if abbr == False and latin == False:
-                roji_hefte = self.weekDays[6]
-            elif abbr == True and latin == False:
-                roji_hefte = self.weekDays[6][0] + "ـ"
-            elif abbr == False and latin == True:
-                roji_hefte = self.weekDays_latin[6]
-            elif abbr == True and latin == True:
-                roji_hefte = self.weekDays_latin[6][0]
         return roji_hefte
 
     # Kurdish Month Names
