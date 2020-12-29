@@ -1,7 +1,7 @@
 
-# Kurdish Calendar
+# Rojjmer (Kurdish Calendar)
 
-Welcome to **Kurdish Calendar** - a small **_Python_** library for converting Gregorian and Solar dates to Kurdish date.
+Welcome to **Rojjmer (Kurdish Calendar)** - a small **_Python_** library for converting Gregorian and Solar dates to Kurdish date and vice versa.
 
 ## Installation
 
