@@ -127,7 +127,7 @@ class Rojjmer:
                 if abbr == False and latin == False:
                     roji_hefte = self.weekDays[1]
                 elif abbr == True and latin == False:
-                    roji_hefte = self.weekDays[1][0]
+                    roji_hefte = self.weekDays[1][0] + "ـ"
                 elif abbr == False and latin == True:
                     roji_hefte = self.weekDays_latin[1]
                 elif abbr == True and latin == True:
@@ -172,7 +172,7 @@ class Rojjmer:
                 if abbr == False and latin == False:
                     roji_hefte = self.weekDays[6]
                 elif abbr == True and latin == False:
-                    roji_hefte = self.weekDays[6][0] + "ـ"
+                    roji_hefte = self.weekDays[6][0]
                 elif abbr == False and latin == True:
                     roji_hefte = self.weekDays_latin[6]
                 elif abbr == True and latin == True:
@@ -192,7 +192,7 @@ class Rojjmer:
                 if abbr == False and latin == False:
                     roji_hefte = self.weekDays[6]
                 elif abbr == True and latin == False:
-                    roji_hefte = self.weekDays[6][0]
+                    roji_hefte = self.weekDays[6][0] + "ـ"
                 elif abbr == False and latin == True:
                     roji_hefte = self.weekDays_latin[6]
                 elif abbr == True and latin == True:
@@ -237,7 +237,7 @@ class Rojjmer:
                 if abbr == False and latin == False:
                     roji_hefte = self.weekDays[4]
                 elif abbr == True and latin == False:
-                    roji_hefte = self.weekDays[4][0] + "ـ"
+                    roji_hefte = self.weekDays[4][0]
                 elif abbr == False and latin == True:
                     roji_hefte = self.weekDays_latin[4]
                 elif abbr == True and latin == True:

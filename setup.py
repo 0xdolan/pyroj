@@ -10,7 +10,7 @@ with open(path.join(myPath, "README.md"), encoding="utf-8") as f:
 
 setup(
     name="pyroj",
-    version="0.0.2",
+    version="0.0.3",
     author="Dolan Hêriş",
     author_email="dolanskurd@mail.com",
     url="https://github.com/dolanskurd/pyroj",
