@@ -9,17 +9,17 @@ with open(path.join(myPath, "README.md"), encoding="utf-8") as f:
     README = f.read()
 
 setup(
-    name="kurdish_calendar",
-    version="0.0.3",
+    name="pyroj",
+    version="0.0.1",
     author="Dolan Hêriş",
     author_email="dolanskurd@mail.com",
-    url="https://github.com/dolanskurd/kurdish_calendar",
+    url="https://github.com/dolanskurd/pyroj",
     description=("Converting Gregorian and Solar dates to Kurdish date"),
     long_description=README,
     long_description_content_type="text/markdown",
     license="MIT",
-    keywords="kurdish language module library converter calendar date gregorian digits persian farsi latin english",
-    packages=["kurdish_calendar"],
+    keywords="kurdish language module library converter calendar date gregorian digits persian farsi latin english kurdi",
+    packages=["pyroj"],
     include_package_data=True,
     install_requires=[],
     classifiers=[
@@ -44,4 +44,3 @@ setup(
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
 )
-
