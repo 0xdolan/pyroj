@@ -1,34 +1,33 @@
+# pyroj (Kurdish Calendar)
 
-# Rojjmer (Kurdish Calendar)
-
-Welcome to **Rojjmer (Kurdish Calendar)** - a small **_Python_** library for converting Gregorian and Solar dates to Kurdish date and vice versa.
+Welcome to **pyroj (Kurdish Calendar)** - a small **_Python_** library for converting Gregorian and Solar dates to Kurdish date and vice versa.
 
 ## Installation
 
-  How to install the module:
+How to install the module:
 
-  `pip install pyroj`
+`pip install pyroj`
 
-  for python 3 in Linux:
+for python 3 in Linux:
 
-  `pip3 install pyroj`
+`pip3 install pyroj`
 
-  or
+or
 
-  `python3 -m pip install pyroj`
+`python3 -m pip install pyroj`
 
-  Install the package using the setup.py script:
-  First cd into the root directory where setup.py is located, then install via below command:
+Install the package using the setup.py script:
+First cd into the root directory where setup.py is located, then install via below command:
 
-  `python setup.py install`
+`python setup.py install`
 
-  **Need help on installing Python modules, click on below link:**
+**Need help on installing Python modules, click on below link:**
 
 - [How to install Python modules](https://docs.python.org/3.9/installing/index.html)
 
 ---
 
-## How to use Kurdish calendar
+## How to use pyroj
 
 ### Get the Kurdish date
 
@@ -141,10 +140,10 @@ print("Month Name (second name):", CAL.month_name(second_name=True, latin=True))
 
 ## Getting help
 
-If you have questions about the python library **Kurdish calendar** module, or run into problems, or if you want to contribute in any way, feel free to reach out to me via below links:
+If you have questions about the python library **pyroj** module, or run into problems, or if you want to contribute in any way, feel free to reach out to me via below links:
 
-- **[GitHub](https://github.com/dolanskurd)**
-- **[PyPI](https://pypi.org/project/kurdish-calendar/)**
+- **[GitHub](https://github.com/dolanskurd/pyroj)**
+- **[PyPI](https://pypi.org/project/pyroj/)**
 - **[Twitter](http://www.twitter.com/dolanskurd)**
 - **E-mail: [dolanskurd@mail.com](mailto:dolanskurd@mail.com)**
 
@@ -156,4 +155,4 @@ If you think it deserves, **DONATE**:
 
 ## License
 
-Kurdish Calendar Library is available under the **MIT license**.
+Pyroj Library is available under the **MIT license**.
