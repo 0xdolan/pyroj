@@ -147,12 +147,6 @@ If you have questions about the python library **pyroj** module, or run into pro
 - **[Twitter](http://www.twitter.com/dolanskurd)**
 - **E-mail: [dolanskurd@mail.com](mailto:dolanskurd@mail.com)**
 
-## Donate
-
-If you think it deserves, **DONATE**:
-
-- **[iTunes Gift Cards via PayPal (Email-Delivery)](https://www.paypal.com/us/gifts/brands/itunes)** to my Apple ID: **dolanskurd@gmail.com**
-
 ## License
 
 Pyroj Library is available under the **MIT license**.
