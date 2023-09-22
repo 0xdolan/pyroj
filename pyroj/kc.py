@@ -154,21 +154,10 @@ class Rojjmer(Utils):
         year += 1
 
         # Find the month and day using a list of days in each month
-        days_in_month = [
-            0,
-            31,
+        second_month = (
             28 if year % 4 != 0 or (year % 100 == 0 and year % 400 != 0) else 29,
-            31,
-            30,
-            31,
-            30,
-            31,
-            31,
-            30,
-            31,
-            30,
-            31,
-        ]
+        )
+        days_in_month = [0, 31, second_month, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
         while day > days_in_month[month]:
             day -= days_in_month[month]
