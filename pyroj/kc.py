@@ -1,111 +1,162 @@
 # -*- coding: utf-8 -*-
 
+from datetime import datetime, timedelta
 from math import floor
 
 
-class Utils:
-    """Utils class for Kurdish Calendar (Rojjmer)"""
+class RojjmerCalendarUtils:
+    """
+    Utility class for Kurdish Calendar (Rojjmer) calculations
+    """
 
-    def __init__(self):
-        """init method for Utils class"""
-
-    def div(self, x, y):
+    @staticmethod
+    def integer_division(x, y):
+        """
+        Integer division of x by y
+        """
         return floor(x / y)
 
-    def mod(self, x, y):
-        r = x % y
-        return r + y if y * r < 0 else r
+    @staticmethod
+    def modulo(x, y):
+        remainder = x % y
+        return remainder + y if y * remainder < 0 else remainder
 
 
-class Rojjmer(Utils):
-    def __init__(self, year, month, day):
-        """init method for Rojjmer class"""
+class Rojjmer(RojjmerCalendarUtils):
+    """
+    Kurdish Calendar (Rojjmer) class
+    """
+
+    # Persian calendar constants
+    PERSIAN_EPOCH = datetime(622, 3, 21)  # March 21, 622 AD in the Gregorian calendar
+    PERSIAN_DAYS_IN_YEAR = 365
+    PERSIAN_DAYS_IN_LEAP_YEAR = 366
+    PERSIAN_MONTH_LENGTHS = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29]
+
+    # Islamic calendar constants
+    ISLAMIC_EPOCH = datetime(622, 7, 16)  # July 16, 622 AD in the Gregorian calendar
+    ISLAMIC_DAYS_IN_YEAR = 354
+    ISLAMIC_DAYS_IN_LEAP_YEAR = 355
+
+    # JULIAN_DAY_NUMBER = 1721423.5
+
+    def __init__(self, year, month, day, hour=0, minute=0, second=0):
+        """
+        Initializer for Rojjmer class
+        """
+
+        # Validate the year
+        if year == 0:
+            raise ValueError("Year 0 does not exist in the Kurdish Calendar")
+        if year < 0:
+            raise ValueError("Year cannot be negative")
+
+        # Validate the month
+        if month < 1 or month > 12:
+            raise ValueError("Month should be between 1 and 12")
+
+        # Validate the day
+        if day < 1 or day > 31:
+            raise ValueError("Day should be between 1 and 31")
+
         self.year = year
         self.month = month
         self.day = day
+        self.hour = hour
+        self.minute = minute
+        self.second = second
 
-        if self.year == 0:
-            raise ValueError("Year 0 does not exist in Kurdish Calendar")
-
-        if self.year < 0:
-            raise ValueError("Year cannot be negative")
-
-        if self.month < 1 or self.month > 12:
-            raise ValueError("Month should be between 1 and 12")
-
-        if self.day < 1 or self.day > 31:
-            raise ValueError("Day should be between 1 and 31")
-
-    def is_leap(self):
-        """check if the year is leap or not"""
-        return self.mod(self.year, 4) == 0
+    def is_leap_year(self):
+        """
+        Check if a year is a leap year.
+        """
+        if (self.year % 4 == 0 and self.year % 100 != 0) or (self.year % 400 == 0):
+            return True
+        return False
 
     def is_persian_leap_year(self):
-        """return persian leap year"""
-
+        """
+        Check if the year is a Persian leap year
+        """
         year = self.year
+        leap_year_remainders = [1, 5, 9, 13, 17, 22, 26, 30]
 
-        if (
-            year % 33 == 1
-            or year % 33 == 5
-            or year % 33 == 9
-            or year % 33 == 13
-            or year % 33 == 17
-            or year % 33 == 22
-            or year % 33 == 26
-            or year % 33 == 30
-        ):
-            return True
-        else:
-            return False
+        return year % 33 in leap_year_remainders
 
     def is_islamic_leap_year(self):
-        """check if the year is leap or not"""
-        return self.mod(self.year, 30) == 2
+        """Check if the current Islamic year is a leap year"""
+        return (self.year * 11 + 14) % 30 < 11
 
-    def get_day_numbers(self):
+    def get_day_of_year(self):
+        """
+        Get the day of the year
+        """
         days_in_month = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30]
 
-        if self.is_leap():
+        if self.is_leap_year():
             days_in_month[2] = 29
 
         day_of_year = self.day + sum(days_in_month[: self.month])
         return day_of_year
 
+    def get_islamic_month_lengths(self):
+        """
+        Get the lengths of Islamic months for a non-leap year
+        """
+        return [30, 29, 30, 29, 30, 29, 30, 30, 29, 30, 29, 30]
+
     def get_weeks_number(self):
-        """return week number"""
-        return self.div(self.get_day_numbers(), 7) + 1
+        """
+        return week number
+        """
+        return self.integer_division(self.get_day_of_year(), 7) + 1
 
     def get_day_of_week(self):
-        """return day of week"""
-        return self.mod(self.gregorian_to_absolute(), 7)
-
-    def get_day_of_month(self):
-        """return day of month"""
-        return self.day
+        """
+        return day of week
+        """
+        return self.modulo(self.gregorian_to_absolute(), 7)
 
     def get_days_of_year(self):
-        """return number of days in a year"""
-        return 366 if self.is_leap() else 365
+        """
+        return number of days in a year
+        """
+        return 366 if self.is_leap_year() else 365
+
+    def get_days_of_month(self):
+        """
+        return number of days in a month
+        """
+        days_in_month = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30]
+        if self.is_leap_year():
+            days_in_month[2] = 29
+
+        return days_in_month[self.month]
 
     def get_last_day_of_month(self):
-        """return last day of month"""
+        """
+        return last day of month
+        """
         if self.month in [1, 3, 5, 7, 8, 10, 12]:
             return 31
         elif self.month in [4, 6, 9, 11]:
             return 30
         elif self.month == 2:
-            return 29 if self.is_leap() else 28
+            return 29 if self.is_leap_year() else 28
 
     def get_persian_last_day_of_month(self):
-        """return last day of month"""
+        """
+        return last day of month
+        """
         if self.month in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
             return 30
         elif self.month in [11, 12]:
             return 29 if self.is_persian_leap_year() else 28
 
     def get_islamic_last_day_of_month(self):
-        """return last day of month"""
+        """
+        return last day of month
+        """
         if self.month in [1, 3, 5, 7, 9, 11]:
             return 30
         elif self.month in [2, 4, 6, 8, 10, 12]:
@@ -114,210 +165,225 @@ class Rojjmer(Utils):
             return 30 if self.is_islamic_leap_year() else 29
 
     def gregorian_to_absolute(self):
-        """return absolute date from gregorian date"""
-
-        return (
-            365 * (self.year - 1)
-            + self.div(self.year - 1, 4)
-            - self.div(self.year - 1, 100)
-            + self.div(self.year - 1, 400)
-            + self.get_day_numbers()
-        )
+        """
+        return absolute date from gregorian date
+        """
+        gregorian_date = datetime(self.year, self.month, self.day)
+        reference_date = datetime(1, 1, 1)  # January 1, 1 AD in the Gregorian calendar
+        delta = gregorian_date - reference_date
+        return delta.days
 
     def absolute_to_gregorian(self):
-        """return gregorian date from absolute date"""
+        """
+        Return Gregorian date and time from absolute date
+        """
 
         date = self.gregorian_to_absolute()
+        time_delta = timedelta(days=date)
+        return datetime(1, 1, 1) + time_delta
 
-        # Constants for various time periods in days
-        DAYS_PER_400_YEARS = 146097
-        DAYS_PER_100_YEARS = 36524
-        DAYS_PER_4_YEARS = 1461
-        DAYS_PER_YEAR = 365
+    # def julian_to_absolute(self):
+    #     """
+    #     Convert Julian date to absolute date
+    #     """
+    #     julian_date = self.gregorian_to_absolute() + self.JULIAN_DAY_NUMBER
+    #     time_delta = timedelta(days=julian_date)
+    #     return datetime(1, 1, 1) + time_delta
 
-        # Calculate the number of cycles for each time period
-        n400, date = divmod(date - 1, DAYS_PER_400_YEARS)
-        n100, date = divmod(date, DAYS_PER_100_YEARS)
-        n4, date = divmod(date, DAYS_PER_4_YEARS)
-        n1, day = divmod(date, DAYS_PER_YEAR)
-
-        # Calculate the year
-        year = 400 * n400 + 100 * n100 + 4 * n4 + n1
-
-        # Initialize month to 1
-        month = 1
-
-        # Check for leap years
-        if n100 == 4 or n1 == 4:
-            return [12, 31, year]
-
-        year += 1
-
-        # Find the month and day using a list of days in each month
-        second_month = (
-            28 if year % 4 != 0 or (year % 100 == 0 and year % 400 != 0) else 29,
+    def get_islamic_year_length(self, year):
+        """Get the length of an Islamic year"""
+        return (
+            self.ISLAMIC_DAYS_IN_LEAP_YEAR
+            if self.is_islamic_leap_year(year)
+            else self.ISLAMIC_DAYS_IN_YEAR
         )
-        days_in_month = [0, 31, second_month, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-
-        while day > days_in_month[month]:
-            day -= days_in_month[month]
-            month += 1
-
-        # add 1 to day to make it 1-based instead of 0-based
-        day += 1
-
-        return year, month, day
-
-    def julian_to_absolute(self):
-        """return absolute date from julian date"""
-
-        year = int(self.year)
-        month = int(self.month)
-
-        absolute_date = (
-            self.day
-            + (
-                1
-                if (year % 100 == 0) and (not (year % 400 == 0)) and (month > 2)
-                else 0
-            )  # Leap year adjustment
-            + (365 * (year - 1))  # Days in previous years
-            + self.div((year - 1), 4)  # Leap year days
-            - 2  # Adjustment factor
-        )
-
-        return absolute_date
-
-    def get_persian_epoch(self):
-        """return persian epoch"""
-        year = 622
-        month = 3
-        day = 19
-
-        return Rojjmer(year, month, day).gregorian_to_absolute()
-
-    def get_islamic_epoch(self):
-        """return islamic epoch"""
-        year = 622
-        month = 7
-        day = 16
-
-        return Rojjmer(year, month, day).gregorian_to_absolute()
 
     def persian_to_absolute(self):
-        """return absolute date from persian date"""
+        """Convert Persian (Jalali) date to absolute date"""
 
-        year = int(self.year)
-        month = int(self.month)
-        day = int(self.day)
+        # Calculate the number of years, months, and days from the Persian epoch
+        persian_year = self.year
+        persian_month = self.month
+        persian_day = self.day
 
-        absolute_date = (
-            day
-            + (
-                1
-                if (year % 33 == 1)
-                or (year % 33 == 5)
-                or (year % 33 == 9)
-                or (year % 33 == 13)
-                or (year % 33 == 17)
-                or (year % 33 == 22)
-                or (year % 33 == 26)
-                or (year % 33 == 30)
-                and (month > 1)
-                else 0
-            )  # Leap year adjustment
-            + (365 * (year - 1))  # Days in previous years
-            + self.div((year - 1), 4)  # Leap year days
-            - 2  # Adjustment factor
+        # Calculate days from years
+        days_from_years = (persian_year - 1) * self.PERSIAN_DAYS_IN_YEAR
+
+        # Calculate days from months
+        days_from_months = sum(self.PERSIAN_MONTH_LENGTHS[: persian_month - 1])
+
+        # If it's a leap year and the month is greater than 6, add one day
+        if self.is_persian_leap_year() and persian_month > 6:
+            days_from_months += 1
+
+        # Calculate the total number of days
+        total_days = days_from_years + days_from_months + persian_day
+
+        # Calculate the absolute date from the Persian epoch
+        persian_epoch = self.PERSIAN_EPOCH
+        absolute_date = persian_epoch + timedelta(
+            days=total_days, hours=self.hour, minutes=self.minute, seconds=self.second
         )
 
         return absolute_date
 
-    def get_perisan_year_from_absolute(self):
-        """return persian year from absolute date"""
+    def get_persian_year_from_absolute(self, absolute_date):
+        """Get the Persian (Jalali) year from an absolute date"""
 
-        absolute_date = self.gregorian_to_absolute()
+        # Calculate the difference in days between the absolute date and the Persian epoch
+        days_difference = (absolute_date - self.PERSIAN_EPOCH).days
 
-        return self.div(absolute_date - self.get_persian_epoch(), 365)
+        # Calculate the Persian year by dividing the days difference by the number of days in a year
+        # (365 days for non-leap years, 366 days for leap years)
+        if self.is_persian_leap_year():
+            if days_difference < 0:
+                return absolute_date.year - 1
+            else:
+                return absolute_date.year
+        else:
+            # Non-leap year
+            return absolute_date.year - 1
 
-    def absolute_to_persian(self):
-        """Return Persian date from absolute date"""
+    def absolute_to_persian(self, absolute_date):
+        """Convert an absolute date to a Persian (Jalali) date"""
 
-        absolute_date = self.gregorian_to_absolute()
-        persian_epoch = self.get_persian_epoch()
+        # Calculate the days difference between the absolute date and the Persian epoch
+        days_difference = (absolute_date - self.PERSIAN_EPOCH).days
 
-        days_difference = absolute_date - persian_epoch
-        persian_year = self.get_perisan_year_from_absolute()
+        # Initialize variables for Persian year, month, and day
+        persian_year = self.get_persian_year_from_absolute(absolute_date)
+        persian_month = 1
+        persian_day = 1
 
-        # Calculate the day, month, and day of the week
-        day = days_difference % 365
-        if day == 0:
-            day = 365
-        month = 1
-        while day > self.get_persian_last_day_of_month():
-            day -= self.get_persian_last_day_of_month()
-            month += 1
+        # Check if it's a leap year and set the month lengths accordingly
+        if self.is_persian_leap_year():
+            persian_month_lengths = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29]
+        else:
+            persian_month_lengths = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 30]
 
-        # Return the Persian date as a tuple (year, month, day)
-        return persian_year, month, day
+        # Subtract days for each month to find the Persian month and day
+        for month_length in persian_month_lengths:
+            if days_difference >= month_length:
+                persian_month += 1
+                days_difference -= month_length
+            else:
+                persian_day += days_difference
+                break
+
+        return persian_year, persian_month, persian_day
 
     def islamic_to_absolute(self):
-        """return absolute date from islamic date"""
+        """
+        Convert Islamic (Hijri) date to absolute date
+        """
 
-        year = int(self.year)
-        month = int(self.month)
-        day = int(self.day)
+        # Constants for Islamic calendar calculations
+        ISLAMIC_DAYS_IN_YEAR = 354
+        ISLAMIC_DAYS_IN_LEAP_YEAR = 355
 
-        absolute_date = (
-            day
-            + (1 if (year % 30 == 2) and (month > 1) else 0)  # Leap year adjustment
-            + (354 * (year - 1))  # Days in previous years
-            + self.div((year - 1), 30)  # Leap year days
-            - 2  # Adjustment factor
+        # Calculate the days difference between the Islamic date and the Persian epoch
+        days_difference = (self.year - 1) * ISLAMIC_DAYS_IN_YEAR
+
+        # Adjust for leap years
+        for i in range(1, self.year):
+            if self.is_islamic_leap_year(i):
+                days_difference += 1
+
+        # Add days for each month
+        days_difference += sum(self.get_islamic_month_lengths()[: self.month - 1])
+        days_difference += self.day
+
+        # Calculate the absolute date from the Persian epoch
+        islamic_epoch = self.PERSIAN_EPOCH
+        absolute_date = islamic_epoch + timedelta(
+            days=days_difference,
+            hours=self.hour,
+            minutes=self.minute,
+            seconds=self.second,
         )
 
         return absolute_date
 
-    def absolute_to_islamic(self):
-        """Return Islamic date from absolute date"""
+    def absolute_to_islamic(self, absolute_date):
+        """Convert an absolute date to an Islamic (Hijri) date"""
 
-        absolute_date = self.gregorian_to_absolute()
-        islamic_epoch = self.get_islamic_epoch()
+        # Calculate the days difference between the absolute date and the Persian epoch
+        days_difference = (absolute_date - self.PERSIAN_EPOCH).days
 
-        days_difference = absolute_date - islamic_epoch
-        islamic_year = self.div(days_difference, 354)
+        # Initialize variables for Islamic year, month, and day
+        islamic_year = 1
+        islamic_month = 1
+        islamic_day = 1
 
-        # Calculate the day, month, and day of the week
-        day = days_difference % 354
-        if day == 0:
-            day = 354
-        month = 1
-        while day > self.get_islamic_last_day_of_month():
-            day -= self.get_islamic_last_day_of_month()
-            month += 1
+        # Adjust for leap years
+        while days_difference >= self.get_islamic_year_length(islamic_year):
+            if self.is_islamic_leap_year(islamic_year):
+                days_difference -= 1
+            days_difference -= self.get_islamic_year_length(islamic_year)
+            islamic_year += 1
 
-        # Return the Islamic date as a tuple (year, month, day)
-        return islamic_year, month, day
+        # Adjust for months and days
+        while islamic_month <= 12 and days_difference >= self.get_islamic_month_length(
+            islamic_year, islamic_month
+        ):
+            days_difference -= self.get_islamic_month_length(
+                islamic_year, islamic_month
+            )
+            islamic_month += 1
 
-    def persian_to_kurdish(self):
-        year = int(self.year) + 1321
+        islamic_day += days_difference
 
-        return Rojjmer(year, self.month, self.day).absolute_to_gregorian()
+        return islamic_year, islamic_month, islamic_day
 
-    def kurdish_to_persian(self):
-        year = int(self.year) - 1321
-        return Rojjmer(year, self.month, self.day).absolute_to_gregorian()
+    # def absolute_to_kurdish(self, absolute_date):
+    #     """Convert an absolute date to a Kurdish date"""
 
-    def kurdish_to_gregorian(self):
-        """return gregorian date from kurdish date"""
+    #     # Calculate the days difference between the absolute date and the Kurdish epoch
+    #     days_difference = (absolute_date - self.KURDISH_EPOCH).days
 
-        year = int(self.year) - 700
-        return Rojjmer(year, self.month, self.day).absolute_to_gregorian()
+    #     # Calculate Kurdish year, month, and day
+    #     kurdish_year = 1
+    #     kurdish_month = 1
+    #     kurdish_day = 1
 
-    def kurdish_to_islamic(self):
-        """return islamic date from kurdish date"""
-        pass
+    #     # Adjust for leap years and months
+    #     while days_difference >= self.get_kurdish_year_length(kurdish_year):
+    #         days_difference -= self.get_kurdish_year_length(kurdish_year)
+    #         kurdish_year += 1
 
-    def islamic_to_kurdish(self):
-        """return kurdish date from islamic date"""
-        pass
+    #     while kurdish_month <= 12 and days_difference >= self.get_kurdish_month_length(kurdish_year, kurdish_month):
+    #         days_difference -= self.get_kurdish_month_length(kurdish_year, kurdish_month)
+    #         kurdish_month += 1
+
+    #     kurdish_day += days_difference
+
+    #     return kurdish_year, kurdish_month, kurdish_day
+
+    # def persian_to_kurdish(self):
+    #     year = int(self.year) + 1321
+
+    #     return Rojjmer(year, self.month, self.day).absolute_to_gregorian()
+
+    # def kurdish_to_persian(self):
+    #     year = int(self.year) - 1321
+    #     return Rojjmer(year, self.month, self.day).absolute_to_gregorian()
+
+    # def kurdish_to_gregorian(self):
+    #     """return gregorian date from kurdish date"""
+
+    #     year = int(self.year) - 700
+    #     return Rojjmer(year, self.month, self.day).absolute_to_gregorian()
+
+    # def gregorian_to_kurdish(self):
+    #     """return kurdish date from gregorian date"""
+
+    #     year = int(self.year) + 700
+    #     return Rojjmer(year, self.month, self.day).absolute_to_gregorian()
+
+    # def kurdish_to_islamic(self):
+    #     """return islamic date from kurdish date"""
+    #     pass
+
+    # def islamic_to_kurdish(self):
+    #     """return kurdish date from islamic date"""
+    #     pass
