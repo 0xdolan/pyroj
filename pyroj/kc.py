@@ -13,7 +13,7 @@ class Rojjmer:
     PERSIAN_EPOCH = datetime(622, 3, 21)  # March 21, 622 AD in the Gregorian calendar
     PERSIAN_DAYS_IN_YEAR = 365
     PERSIAN_DAYS_IN_LEAP_YEAR = 366
-    PERSIAN_MONTH_LENGTHS = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29]
+    DAYS_IN_PERSIAN_MONTH = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29]
 
     # Islamic calendar constants
     ISLAMIC_EPOCH = datetime(622, 7, 16)  # July 16, 622 AD in the Gregorian calendar
@@ -135,6 +135,20 @@ class Rojjmer:
         elif self.month in [11, 12]:
             return 29 if self.is_persian_leap_year() else 28
 
+    def get_persian_year_length(self):
+        """Get the length of a Persian year"""
+        return (
+            self.PERSIAN_DAYS_IN_LEAP_YEAR
+            if self.is_persian_leap_year()
+            else self.PERSIAN_DAYS_IN_YEAR
+        )
+
+    def get_persian_month_length(self):
+        """Get the length of a Persian month"""
+        if self.month == 12 and not self.is_persian_leap_year():
+            return 29
+        return self.DAYS_IN_PERSIAN_MONTH[self.month - 1]
+
     def get_islamic_last_day_of_month(self):
         """
         return last day of month
@@ -180,7 +194,7 @@ class Rojjmer:
             else self.ISLAMIC_DAYS_IN_YEAR
         )
 
-    def persian_to_absolute(self):
+    def persian_to_gregorian(self):
         """Convert Persian (Jalali) date to absolute date"""
 
         # Calculate the number of years, months, and days from the Persian epoch
@@ -192,7 +206,7 @@ class Rojjmer:
         days_from_years = (persian_year - 1) * self.PERSIAN_DAYS_IN_YEAR
 
         # Calculate days from months
-        days_from_months = sum(self.PERSIAN_MONTH_LENGTHS[: persian_month - 1])
+        days_from_months = sum(self.DAYS_IN_PERSIAN_MONTH[: persian_month - 1])
 
         # Adjust for leap years
         leap_year_count = sum(
@@ -211,40 +225,67 @@ class Rojjmer:
 
         return absolute_date
 
-    def absolute_to_persian(self):
-        """
-        Convert an absolute date to a Persian (Jalali) date
-        """
-
-        absolute_date = self.gregorian_to_absolute()
+    def gregorian_to_persian(self):
+        """Convert an absolute date to Persian (Jalali) date"""
 
         # Calculate the days difference between the absolute date and the Persian epoch
-        delta = absolute_date - self.PERSIAN_EPOCH
-
-        # Extract the number of days from the timedelta
-        days_difference = delta.days
+        days_difference = (self.absolute_to_gregorian() - self.PERSIAN_EPOCH).days
 
         # Initialize variables for Persian year, month, and day
-        persian_year = self.get_persian_year_from_absolute(absolute_date)
+        persian_year = 1
         persian_month = 1
         persian_day = 1
 
-        # Check if it's a leap year and set the month lengths accordingly
-        if self.is_persian_leap_year():
-            persian_month_lengths = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29]
-        else:
-            persian_month_lengths = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 30]
+        # Adjust for leap years
+        while days_difference >= self.get_persian_year_length():
+            if self.is_persian_leap_year():
+                days_difference -= 1
+            days_difference -= self.get_persian_year_length()
+            persian_year += 1
 
-        # Subtract days for each month to find the Persian month and day
-        for month_length in persian_month_lengths:
-            if days_difference >= month_length:
-                persian_month += 1
-                days_difference -= month_length
-            else:
-                persian_day += days_difference
-                break
+        # Adjust for months and days
+        while (
+            persian_month <= 12 and days_difference >= self.get_persian_month_length()
+        ):
+            days_difference -= self.get_persian_month_length()
+            persian_month += 1
+
+        persian_day += days_difference
 
         return persian_year, persian_month, persian_day
+
+    def persian_to_absolute(self):
+        """
+        Return absolute date from Persian (Solar Hijri) date.
+        """
+        # Define the number of days in each Persian month in a non-leap year.
+
+        # Calculate the total days for the years before the given year.
+        total_days = 0
+        for y in range(1, self.year):
+            total_days += 365  # Persian year has 365 days
+
+        # Add the days for each month in the current year.
+        for m in range(1, self.month):
+            total_days += self.DAYS_IN_PERSIAN_MONTH[m - 1]
+
+        # Add the days for the current month.
+        total_days += self.day
+
+        # Account for leap years (which occur every 4 or 33 years in the Persian calendar).
+        if self.month <= 10:
+            leap_year_count = floor((self.year - 1) / 4)
+        else:
+            leap_year_count = floor(self.year / 4)
+
+        total_days += leap_year_count
+
+        return total_days
+
+    def absolute_to_persian(self):
+        """Convert an absolute date to Persian (Jalali) date"""
+
+        pass
 
     def islamic_to_absolute(self):
         """
