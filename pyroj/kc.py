@@ -4,25 +4,7 @@ from datetime import datetime, timedelta
 from math import floor
 
 
-class RojjmerCalendarUtils:
-    """
-    Utility class for Kurdish Calendar (Rojjmer) calculations
-    """
-
-    @staticmethod
-    def integer_division(x, y):
-        """
-        Integer division of x by y
-        """
-        return floor(x / y)
-
-    @staticmethod
-    def modulo(x, y):
-        remainder = x % y
-        return remainder + y if y * remainder < 0 else remainder
-
-
-class Rojjmer(RojjmerCalendarUtils):
+class Rojjmer:
     """
     Kurdish Calendar (Rojjmer) class
     """
@@ -109,13 +91,13 @@ class Rojjmer(RojjmerCalendarUtils):
         """
         return week number
         """
-        return self.integer_division(self.get_day_of_year(), 7) + 1
+        return floor(self.get_day_of_year() / 7)
 
     def get_day_of_week(self):
         """
         return day of week
         """
-        return self.modulo(self.gregorian_to_absolute(), 7)
+        return (self.gregorian_to_absolute() + 1) % 7
 
     def get_days_of_year(self):
         """
@@ -212,9 +194,11 @@ class Rojjmer(RojjmerCalendarUtils):
         # Calculate days from months
         days_from_months = sum(self.PERSIAN_MONTH_LENGTHS[: persian_month - 1])
 
-        # If it's a leap year and the month is greater than 6, add one day
-        if self.is_persian_leap_year() and persian_month > 6:
-            days_from_months += 1
+        # Adjust for leap years
+        leap_year_count = sum(
+            1 for self.year in range(1, persian_year) if self.is_persian_leap_year()
+        )
+        days_from_months += leap_year_count
 
         # Calculate the total number of days
         total_days = days_from_years + days_from_months + persian_day
@@ -222,33 +206,23 @@ class Rojjmer(RojjmerCalendarUtils):
         # Calculate the absolute date from the Persian epoch
         persian_epoch = self.PERSIAN_EPOCH
         absolute_date = persian_epoch + timedelta(
-            days=total_days, hours=self.hour, minutes=self.minute, seconds=self.second
-        )
+            days=total_days - 1
+        )  # Subtract 1 day to adjust for the epoch day
 
         return absolute_date
 
-    def get_persian_year_from_absolute(self, absolute_date):
-        """Get the Persian (Jalali) year from an absolute date"""
+    def absolute_to_persian(self):
+        """
+        Convert an absolute date to a Persian (Jalali) date
+        """
 
-        # Calculate the difference in days between the absolute date and the Persian epoch
-        days_difference = (absolute_date - self.PERSIAN_EPOCH).days
-
-        # Calculate the Persian year by dividing the days difference by the number of days in a year
-        # (365 days for non-leap years, 366 days for leap years)
-        if self.is_persian_leap_year():
-            if days_difference < 0:
-                return absolute_date.year - 1
-            else:
-                return absolute_date.year
-        else:
-            # Non-leap year
-            return absolute_date.year - 1
-
-    def absolute_to_persian(self, absolute_date):
-        """Convert an absolute date to a Persian (Jalali) date"""
+        absolute_date = self.gregorian_to_absolute()
 
         # Calculate the days difference between the absolute date and the Persian epoch
-        days_difference = (absolute_date - self.PERSIAN_EPOCH).days
+        delta = absolute_date - self.PERSIAN_EPOCH
+
+        # Extract the number of days from the timedelta
+        days_difference = delta.days
 
         # Initialize variables for Persian year, month, and day
         persian_year = self.get_persian_year_from_absolute(absolute_date)
