@@ -1,2 +1,0 @@
-# Runtime: Python 3.10+ standard library only (no pip dependencies).
-# Development: pip install -e ".[dev]"

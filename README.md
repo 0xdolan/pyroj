@@ -3,8 +3,23 @@
 **pyroj** is a Python library for the Kurdish **solar** calendar and conversions to/from **Gregorian**, **Persian (Jalali)**, and **tabular Islamic** dates. **Runtime dependencies: none** — only the Python standard library (`datetime`, etc.). Calendar math uses the same Julian-day hub as the **KurdishDate** TypeScript reference (see sibling folder in the monorepo) in the Kurdistanica-style model (**Kurdish year = Persian year + 1321**).
 
 - **Python**: 3.10+
-- **Install**: `pip install .` or `pip install -e ".[dev]"` for development (pytest, ruff, mypy)
+- **Dependency/tool workflow**: `uv` + `pyproject.toml` (no `requirements.txt`)
 - **Supported year range**: `1..9999` for public APIs (aligned with Python `datetime.date`)
+
+## Development setup (uv + ruff)
+
+```bash
+uv sync --extra dev
+uv run pytest -q
+uv run ruff check pyroj tests
+uv run mypy pyroj
+```
+
+Install the package locally for development:
+
+```bash
+uv pip install -e .
+```
 
 ## Quick start
 

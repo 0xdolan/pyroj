@@ -7,7 +7,7 @@ Report sensitive vulnerabilities through the repository’s private security adv
 ## Development practices
 
 - **No secrets in git**: API keys, tokens, passwords, and personal MCP `mcp.json` files must not be committed. Use `.cursor/mcp.json.example` as a template; keep real configs local and gitignored.
-- **Dependencies**: v2 targets **stdlib-only** runtime to minimize supply-chain surface. Development tools (pytest, ruff, mypy) are pinned in optional dependency groups.
+- **Dependencies**: v2 targets **stdlib-only** runtime to minimize supply-chain surface. Development dependencies are managed from `pyproject.toml` using `uv` (avoid `requirements.txt` drift).
 - **Input validation**: All calendar components validate year/month/day ranges before conversion. Do not use `eval`, `exec`, or `pickle` on untrusted input in library code.
 - **Logging**: Do not log environment variables, auth headers, or full user paths by default.
 
