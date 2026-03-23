@@ -26,4 +26,4 @@ alwaysApply: false
 ## References
 
 - `docs/ARCHITECTURE.md` — design.
-- `docs/REFACTOR_TASKMASTER.json` — task breakdown for Task Master AI.
+- `pyroj/locales/catalog.json` — locale month/weekday strings.

@@ -6,7 +6,7 @@ This document defines how the refactored **pyroj** library aligns with Python’
 
 - **Single runtime dependency**: the Python standard library (`datetime`, `logging`, `enum`, `typing`, `dataclasses` as needed). Calendar algorithms (Julian day number, Persian solar, tabular Islamic) are implemented in pure Python inside the package—no `persiantools`, no `hijri` wheels.
 - **Interop first**: Kurdish calendar values are not opaque strings. They behave like `datetime.date` / `datetime.datetime` companions: comparable, hashable where appropriate, and convertible to/from `datetime.date` and `datetime.datetime`.
-- **Extensibility**: New calendar systems or Kurdish naming dialects are added via registries (protocols / abstract base classes), not by editing monolithic classes.
+- **Extensibility**: Locale strings live in `pyroj/locales/catalog.json`; new display languages can be added by extending that file and `LocaleId` when needed.
 - **Observability**: Structured logging (module-level loggers), no secrets in logs.
 - **Safety**: Strict validation on construction; no `eval`, no unsafe deserialization; reject out-of-range dates with documented exceptions.
 
@@ -29,27 +29,19 @@ Historical sources describe different epoch conventions:
 
 The v2 API must expose this as an explicit **`KurdishEra`** (or similarly named) enum so users and tests never mix eras silently.
 
-## Package layout (proposed)
+## Package layout (current)
 
 ```
 pyroj/
-  __init__.py          # Public exports; version
-  _core/
-    jdn.py             # Julian day conversions (pure integer + fraction)
-    gregorian.py
-    persian.py         # Jalali / Persian solar (2820-year cycle)
-    islamic.py         # Tabular Islamic (same model as KurdishDate)
-  kurdish.py           # KurdishDate-like type built on Persian + era
-  locales/
-    registry.py        # Register month/weekday names by dialect + script
-    ku_kurmanci.py
-    ku_sorani.py
-    ...
-  exceptions.py        # PyrojValueError, PyrojRangeError, ...
-  logging_config.py    # Optional helper; getLogger(__name__) everywhere
+  _core/convert.py     # Julian day hub (Gregorian, Persian, Islamic)
+  kurdish.py           # KurdishDate
+  locales/catalog.json # Month/weekday strings per locale (loaded at import)
+  locales/catalog.py   # Loader + LOCALE_BY_ID
+  formatting.py        # Fixed-token date formatting
+  exceptions.py
 ```
 
-Naming follows **PEP 8** and mirrors `datetime` (`date`, `time`, `datetime`, `timedelta`) where parallel concepts exist—e.g. a `KurdishDate` class that implements a similar subset of operations to `datetime.date` (today, replace, weekday, toordinal/fromordinal via Gregorian bridge, etc.).
+Naming follows **PEP 8**; `KurdishDate` mirrors `datetime.date` where practical (`replace`, ordering, hash).
 
 ## Types and behavior
 

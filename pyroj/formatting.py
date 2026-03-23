@@ -176,7 +176,6 @@ def format_iso_date(
     )
 
 
-# Optional: reject patterns that look like format-string injection (parentheses / braces abuse)
 _SUSPICIOUS = re.compile(r"[{}%]")
 
 

@@ -59,7 +59,11 @@ print(to_locale_digits("2718", get_locale(LocaleId.FA)))
 
 ## Continuous integration
 
-GitHub Actions runs **pytest**, **ruff**, and **mypy** on Python 3.10–3.13 (see `.github/workflows/ci.yml`). Optional: `pre-commit install` using `.pre-commit-config.yaml`.
+GitHub Actions runs **pytest**, **ruff**, and **mypy** on Python 3.10–3.13 (see `.github/workflows/ci.yml`).
+
+## Locale data
+
+Editable month and weekday strings live in **`pyroj/locales/catalog.json`** (loaded at import). To add or adjust a locale, edit that file and keep the same JSON shape (`locales.<key>.gregorian|persian|kurdish|islamic` plus `digits` and `am_pm`).
 
 ## Legacy `Rojjmer`
 
@@ -79,8 +83,7 @@ assert cal2.to_gregorian().isoformat() == "2020-12-28"
 
 ## Documentation
 
-- `docs/ARCHITECTURE.md` — eras, JDN hub, security notes
-- `docs/REFACTOR_TASKMASTER.json` — task list for follow-up work
+- `docs/ARCHITECTURE.md` — design overview (eras, JDN hub)
 
 ## License
 
