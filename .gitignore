@@ -110,3 +110,4 @@ venv.bak/
 # Local environment / secrets
 *.pem
 secrets/
+uv.lock

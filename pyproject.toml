@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyroj"
-version = "1.0.0"
+version = "1.1.0"
 description = "Kurdish solar calendar and conversions (Gregorian, Persian/Jalali, tabular Islamic) using the Python standard library only."
 readme = "README.md"
 license = { text = "MIT" }
@@ -50,6 +50,9 @@ target-version = "py310"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+"pyroj/locales/catalog.py" = ["E501"]
 
 [tool.mypy]
 python_version = "3.10"
