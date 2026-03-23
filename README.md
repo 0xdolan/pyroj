@@ -1,152 +1,59 @@
 # pyroj (Kurdish Calendar)
 
-Welcome to **pyroj (Kurdish Calendar)** - a small **_Python_** library for converting Gregorian and Solar dates to Kurdish date and vice versa.
+**pyroj** is a Python library for the Kurdish **solar** calendar and conversions to/from **Gregorian**, **Persian (Jalali)**, and **tabular Islamic** dates. **Runtime dependencies: none** — only the Python standard library (`datetime`, etc.). Calendar math uses the same Julian-day hub as the **KurdishDate** TypeScript reference (see sibling folder in the monorepo) in the Kurdistanica-style model (**Kurdish year = Persian year + 1321**).
 
-## Installation
+- **Python**: 3.10+
+- **Install**: `pip install .` or `pip install -e ".[dev]"` for development (pytest, ruff, mypy)
 
-How to install the module:
-
-`pip install pyroj`
-
-for python 3 in Linux:
-
-`pip3 install pyroj`
-
-or
-
-`python3 -m pip install pyroj`
-
-Install the package using the setup.py script:
-First cd into the root directory where setup.py is located, then install via below command:
-
-`python setup.py install`
-
-**Need help on installing Python modules, click on below link:**
-
-- [How to install Python modules](https://docs.python.org/3.9/installing/index.html)
-
----
-
-## How to use pyroj
-
-### Get the Kurdish date
+## Quick start
 
 ```python
-from pyroj import rojjmer
+from datetime import date
+from pyroj import KurdishDate, gregorian_to_islamic, gregorian_to_persian
 
-# make an instance from the class with Gregorian date
-CAL = rojjmer.Rojjmer(2020, 12, 28)
-print(CAL.to_kurdish(solar=False))
-
-# Output:
-# 2720-10-08
-
-# make an instance from the class with Solar date
-CAL = rojjmer.Rojjmer(1399, 10, 8)
-print(CAL.to_kurdish(solar=True))
-
-# Output:
-# 2720-10-08
+d = date(2018, 4, 10)
+kd = KurdishDate.from_gregorian(d)
+print(kd.year, kd.month, kd.day)   # 2718 1 21
+print(kd.to_persian())             # (1397, 1, 21)
+print(kd.to_islamic())             # (1439, 7, 24)
+print(gregorian_to_persian(d))
+print(gregorian_to_islamic(d))
 ```
 
-### Get the Kurdish date - Only year, month or day
+### `datetime.date`-style usage
+
+`KurdishDate` is an immutable value object: comparison, `hash`, `replace`, and conversion helpers behave like a calendar-specific `date`.
 
 ```python
-from pyroj import rojjmer
+from pyroj import KurdishDate
 
-# make an instance from the class with Gregorian date
-CAL = rojjmer.Rojjmer(2020, 12, 28)
-
-# Get only the year
-print("YEAR:", CAL.to_kurdish().year)
-
-# Get only the month
-print("MONTH:", CAL.to_kurdish().month)
-
-# Get only the day
-print("DAY:", CAL.to_kurdish().day)
-
-# Output:
-# YEAR: 2720
-# MONTH: 10
-# DAY: 8
+a = KurdishDate.from_persian(1397, 1, 21)
+b = KurdishDate.from_kurdish_solar(2718, 1, 21)
+assert a == b
+assert a.to_gregorian().isoformat() == "2018-04-10"
 ```
 
-### Get the Kurdish Weekday (in Arabic-based and Latin-based)
+## Legacy `Rojjmer`
+
+The previous API remains for compatibility; prefer `KurdishDate` for new code.
 
 ```python
-from pyroj import rojjmer
+from pyroj.rojjmer import Rojjmer
 
-# make an instance from the class with Gregorian date
-CAL = rojjmer.Rojjmer(2020, 12, 28)
+cal = Rojjmer(2018, 4, 10)          # Gregorian
+kd = cal.to_kurdish()               # KurdishDate
+assert kd.year == 2718
 
-print("WEEKDAY:", CAL.hefte())
-# Output:
-# WEEKDAY: دووشەممە
-
-print("WEEKDAY:", CAL.hefte(abbr=False, latin=False))
-# Output:
-# WEEKDAY: دووشەممە
-
-
-print("Abbreviated WEEKDAY:", CAL.hefte(abbr=True, latin=False))
-# Output:
-# Abbreviated WEEKDAY: د
-
-
-print("Abbreviated WEEKDAY:", CAL.hefte(abbr=True, latin=True))
-# Output:
-# Abbreviated WEEKDAY: D
-
-
-print("WEEKDAY:", CAL.hefte(abbr=False, latin=True))
-# Output:
-# WEEKDAY: Dûşemme
-
+# to_gregorian() treats (year, month, day) as Persian (Jalali), like old JalaliDate(...)
+cal2 = Rojjmer(1399, 10, 8)
+assert cal2.to_gregorian().isoformat() == "2020-12-28"
 ```
 
-### Get the Kurdish Month Names (in Arabic-based and Latin-based)
+## Documentation
 
-```python
-
-# make an instance from the class with Gregorian date
-CAL = rojjmer.Rojjmer(2021, 3, 21)
-
-print("Month Name:", CAL.month_name())
-# Output:
-# Month Name: خاکەلێوە
-
-# Those months have two names, will be accessible via second_name parameter to be True
-print("Month Name (second name):", CAL.month_name(second_name=True))
-# Output:
-# Month Name: نەورۆز
-
-print("Month Name:", CAL.month_name(second_name=False, latin=True))
-# Output:
-# Month Name: Xakelêwe
-
-# Those months have two names, will be accessible via second_name parameter to be True
-print("Month Name (second name):", CAL.month_name(second_name=True, latin=True))
-# Output:
-# Month Name: Newroz
-
-```
-
-## To-Do List
-
-- N/A
-
----
-
-## Getting help
-
-If you have questions about the python library **pyroj** module, or run into problems, or if you want to contribute in any way, feel free to reach out to me via below links:
-
-- **[GitHub](https://github.com/dolanskurd/pyroj)**
-- **[PyPI](https://pypi.org/project/pyroj/)**
-- **[Twitter](http://www.twitter.com/dolanskurd)**
-- **E-mail: [dolanskurd@mail.com](mailto:dolanskurd@mail.com)**
+- `docs/ARCHITECTURE.md` — eras, JDN hub, security notes
+- `docs/REFACTOR_TASKMASTER.json` — task list for larger features (locales, formatting, CI)
 
 ## License
 
-Pyroj Library is available under the **MIT license**.
+MIT.
