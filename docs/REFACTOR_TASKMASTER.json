@@ -1,0 +1,103 @@
+{
+  "meta": {
+    "project": "pyroj",
+    "version": "1.2.0-plan-sync",
+    "updated_at": "2026-03-22",
+    "source_of_truth": "docs/TODO.md",
+    "branch_strategy": "feature work on refactor/* or feature/* branches, merge to develop, release from main",
+    "default_source_branch": "develop",
+    "target_merge_branch": "develop",
+    "maintenance_note": "Keep this file updated whenever TODO status changes or significant scope changes are introduced."
+  },
+  "tasks": [
+    {
+      "id": "T1",
+      "title": "Packaging baseline",
+      "priority": "high",
+      "status": "completed",
+      "subtasks": [
+        { "id": "T1.1", "title": "Use pyproject.toml with metadata and tool config", "status": "completed" },
+        { "id": "T1.2", "title": "Remove runtime persiantools dependency", "status": "completed" },
+        { "id": "T1.3", "title": "Document supported Python versions", "status": "completed" }
+      ]
+    },
+    {
+      "id": "T2",
+      "title": "Core calendar conversion hub",
+      "priority": "high",
+      "status": "in_progress",
+      "subtasks": [
+        { "id": "T2.1", "title": "Gregorian <-> JDN with leap rules", "status": "completed" },
+        { "id": "T2.2", "title": "Persian and Islamic conversion via JDN", "status": "completed" },
+        { "id": "T2.3", "title": "Datetime/fractional-day support", "status": "pending" }
+      ]
+    },
+    {
+      "id": "T3",
+      "title": "Kurdish core type",
+      "priority": "high",
+      "status": "in_progress",
+      "subtasks": [
+        { "id": "T3.1", "title": "KurdishDate with ordering/hash/replace", "status": "completed" },
+        { "id": "T3.2", "title": "Strict input/range validation and Pyroj exceptions", "status": "completed" },
+        { "id": "T3.3", "title": "Nineveh/612 BCE era support", "status": "pending" }
+      ]
+    },
+    {
+      "id": "T4",
+      "title": "Locales and formatting",
+      "priority": "high",
+      "status": "completed",
+      "subtasks": [
+        { "id": "T4.1", "title": "Locale IDs (en/ku/fa/tr/ar)", "status": "completed" },
+        { "id": "T4.2", "title": "Locale catalog moved to JSON", "status": "completed" },
+        { "id": "T4.3", "title": "Safe fixed-token formatter", "status": "completed" }
+      ]
+    },
+    {
+      "id": "T5",
+      "title": "Legacy migration",
+      "priority": "medium",
+      "status": "in_progress",
+      "subtasks": [
+        { "id": "T5.1", "title": "Rojjmer backed by new conversion core", "status": "completed" },
+        { "id": "T5.2", "title": "Class-level deprecation strategy and removal version", "status": "pending" },
+        { "id": "T5.3", "title": "Migration guide for 0.x users", "status": "pending" }
+      ]
+    },
+    {
+      "id": "T6",
+      "title": "Typing and naming standards",
+      "priority": "high",
+      "status": "pending",
+      "subtasks": [
+        { "id": "T6.1", "title": "Audit modules for PEP 8 naming consistency", "status": "pending" },
+        { "id": "T6.2", "title": "Ensure typed signatures/returns on all public APIs", "status": "pending" },
+        { "id": "T6.3", "title": "Strengthen explicit structure typing (TypedDict/dataclass/Enum)", "status": "pending" },
+        { "id": "T6.4", "title": "Expand tests around type edge-cases (bool/non-int/None)", "status": "pending" }
+      ]
+    },
+    {
+      "id": "T7",
+      "title": "Quality and CI hardening",
+      "priority": "medium",
+      "status": "in_progress",
+      "subtasks": [
+        { "id": "T7.1", "title": "CI for pytest/ruff/mypy", "status": "completed" },
+        { "id": "T7.2", "title": "Coverage threshold gate", "status": "pending" },
+        { "id": "T7.3", "title": "Security linting step", "status": "pending" }
+      ]
+    },
+    {
+      "id": "T8",
+      "title": "Documentation and release hygiene",
+      "priority": "medium",
+      "status": "in_progress",
+      "subtasks": [
+        { "id": "T8.1", "title": "Architecture and README updated for current design", "status": "completed" },
+        { "id": "T8.2", "title": "Document exception contract per public API", "status": "pending" },
+        { "id": "T8.3", "title": "Add CHANGELOG.md", "status": "pending" }
+      ]
+    }
+  ]
+}

@@ -4,19 +4,19 @@ This is the current actionable task list after the refactor and cleanup.
 
 ## P0 — Must Do Next
 
-- [ ] **Input validation hardening**
-  - [ ] Reject `bool` values where `int` is expected in all public APIs.
-  - [ ] Add explicit range checks for `month`/`day` in conversion helpers, not only in `KurdishDate`.
-  - [ ] Add year bounds policy and enforce it consistently.
-  - [ ] Raise `PyrojValueError` / `PyrojRangeError` consistently (avoid plain `ValueError` in public paths).
+- [x] **Input validation hardening**
+  - [x] Reject `bool` values where `int` is expected in all public APIs.
+  - [x] Add explicit range checks for `month`/`day` in conversion helpers, not only in `KurdishDate`.
+  - [x] Add year bounds policy and enforce it consistently.
+  - [x] Raise `PyrojValueError` / `PyrojRangeError` consistently (avoid plain `ValueError` in public paths).
 
-- [ ] **Exception consistency**
-  - [ ] Replace `ValueError` in `pyroj/_core/convert.py` with project exceptions where exposed.
+- [x] **Exception consistency**
+  - [x] Replace `ValueError` in `pyroj/_core/convert.py` with project exceptions where exposed.
   - [ ] Add API docs section listing exact exception types per public function.
 
-- [ ] **Recreate structured roadmap artifact**
-  - [ ] Keep this file as source-of-truth backlog.
-  - [ ] Optionally regenerate a machine-readable task JSON from this file.
+- [x] **Recreate structured roadmap artifact**
+  - [x] Keep this file as source-of-truth backlog.
+  - [x] Optionally regenerate a machine-readable task JSON from this file.
 
 ## P1 — High Value
 
@@ -51,6 +51,12 @@ This is the current actionable task list after the refactor and cleanup.
 - [ ] **Release docs**
   - [ ] Add `CHANGELOG.md`.
   - [ ] Add migration guide section in README (`0.x -> 1.x/1.2+`).
+
+- [ ] **Naming conventions and typing audit**
+  - [ ] Audit all modules for modern PEP 8 naming consistency.
+  - [ ] Ensure all public functions/methods have explicit typed signatures and typed returns.
+  - [ ] Add/strengthen `TypedDict`/dataclass/Enum usage where structure is currently implicit.
+  - [ ] Add typing-focused tests/checks for edge input types and overload behavior.
 
 ## Already Done (Do Not Repeat)
 
