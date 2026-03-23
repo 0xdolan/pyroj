@@ -12,6 +12,8 @@ from enum import Enum, auto
 
 from pyroj._core.convert import (
     KURDISH_SOLAR_YEAR_OFFSET,
+    MAX_SUPPORTED_YEAR,
+    MIN_SUPPORTED_YEAR,
     gregorian_to_jdn,
     islamic_to_jdn,
     jdn_to_gregorian,
@@ -22,6 +24,20 @@ from pyroj._core.convert import (
     persian_weekday_from_gregorian,
 )
 from pyroj.exceptions import PyrojRangeError, PyrojValueError
+
+
+def _require_int(name: str, value: object) -> int:
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise PyrojValueError(f"{name} must be int (bool is not allowed)")
+    return value
+
+
+def _require_year(year: int) -> int:
+    if year < MIN_SUPPORTED_YEAR or year > MAX_SUPPORTED_YEAR:
+        raise PyrojRangeError(
+            f"year must be in [{MIN_SUPPORTED_YEAR}, {MAX_SUPPORTED_YEAR}], got {year}"
+        )
+    return year
 
 
 class KurdishEra(Enum):
@@ -45,6 +61,9 @@ class KurdishDate:
     era: KurdishEra = KurdishEra.SOLAR_PERSIAN_OFFSET
 
     def __post_init__(self) -> None:
+        _require_year(_require_int("year", self.year))
+        _require_int("month", self.month)
+        _require_int("day", self.day)
         if self.era is not KurdishEra.SOLAR_PERSIAN_OFFSET:
             raise PyrojValueError(f"Unsupported era: {self.era!r}")
         if self.month < 1 or self.month > 12:
@@ -70,6 +89,8 @@ class KurdishDate:
         cls, d: date, *, era: KurdishEra = KurdishEra.SOLAR_PERSIAN_OFFSET
     ) -> KurdishDate:
         """Build from a Gregorian :class:`datetime.date`."""
+        if not isinstance(d, date):
+            raise PyrojValueError("d must be datetime.date")
         j = gregorian_to_jdn(d.year, d.month, d.day)
         py, pm, pd = jdn_to_persian(j)
         return cls(py + KURDISH_SOLAR_YEAR_OFFSET, pm, pd, era=era)
@@ -169,6 +190,9 @@ def gregorian_to_persian(d: date) -> tuple[int, int, int]:
 
 def islamic_to_gregorian(year: int, month: int, day: int) -> date:
     """Gregorian date for a tabular Islamic date."""
+    _require_year(_require_int("year", year))
+    _require_int("month", month)
+    _require_int("day", day)
     j = islamic_to_jdn(year, month, day)
     y, m, d = jdn_to_gregorian(j)
     return date(y, m, d)
@@ -176,6 +200,9 @@ def islamic_to_gregorian(year: int, month: int, day: int) -> date:
 
 def persian_to_gregorian(year: int, month: int, day: int) -> date:
     """Gregorian date for a Persian (Jalali) date."""
+    _require_year(_require_int("year", year))
+    _require_int("month", month)
+    _require_int("day", day)
     j = persian_to_jdn(year, month, day)
     y, m, d = jdn_to_gregorian(j)
     return date(y, m, d)

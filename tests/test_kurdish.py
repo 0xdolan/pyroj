@@ -5,7 +5,7 @@ from datetime import date
 import pytest
 
 from pyroj import KurdishDate
-from pyroj.exceptions import PyrojRangeError
+from pyroj.exceptions import PyrojRangeError, PyrojValueError
 
 
 def test_from_gregorian_april_10_2018() -> None:
@@ -46,3 +46,10 @@ def test_invalid_day() -> None:
 def test_hash() -> None:
     kd = KurdishDate.from_gregorian(date(2018, 4, 10))
     assert hash(kd) == hash(KurdishDate(2718, 1, 21))
+
+
+def test_kurdish_rejects_bool_and_year_bounds() -> None:
+    with pytest.raises(PyrojValueError):
+        KurdishDate.from_kurdish_solar(2718, True, 21)  # type: ignore[arg-type]
+    with pytest.raises(PyrojRangeError):
+        KurdishDate.from_kurdish_solar(10000, 1, 1)

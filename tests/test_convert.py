@@ -2,6 +2,8 @@
 
 from datetime import date
 
+import pytest
+
 from pyroj._core.convert import (
     gregorian_to_jdn,
     gregorian_weekday_to_persian_weekday,
@@ -13,6 +15,7 @@ from pyroj._core.convert import (
     persian_to_jdn,
     persian_weekday_from_gregorian,
 )
+from pyroj.exceptions import PyrojRangeError, PyrojValueError
 
 
 def test_gregorian_round_trip() -> None:
@@ -42,3 +45,14 @@ def test_islamic_round_trip() -> None:
     y, m, d = 1439, 7, 24
     j = islamic_to_jdn(y, m, d)
     assert jdn_to_islamic(j) == (y, m, d)
+
+
+def test_convert_rejects_bool_and_ranges() -> None:
+    with pytest.raises(PyrojValueError):
+        gregorian_to_jdn(True, 1, 1)  # type: ignore[arg-type]
+    with pytest.raises(PyrojRangeError):
+        gregorian_to_jdn(2018, 13, 1)
+    with pytest.raises(PyrojRangeError):
+        persian_to_jdn(1397, 12, 30)
+    with pytest.raises(PyrojRangeError):
+        islamic_to_jdn(1439, 13, 1)

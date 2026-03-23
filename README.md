@@ -4,6 +4,7 @@
 
 - **Python**: 3.10+
 - **Install**: `pip install .` or `pip install -e ".[dev]"` for development (pytest, ruff, mypy)
+- **Supported year range**: `1..9999` for public APIs (aligned with Python `datetime.date`)
 
 ## Quick start
 
