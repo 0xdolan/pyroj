@@ -1,0 +1,16 @@
+# Security
+
+## Reporting
+
+Report sensitive vulnerabilities through the repository’s private security advisory channel or maintainer contact on the GitHub project page—not in public issues.
+
+## Development practices
+
+- **No secrets in git**: API keys, tokens, passwords, and personal MCP `mcp.json` files must not be committed. Use `.cursor/mcp.json.example` as a template; keep real configs local and gitignored.
+- **Dependencies**: v2 targets **stdlib-only** runtime to minimize supply-chain surface. Development tools (pytest, ruff, mypy) are pinned in optional dependency groups.
+- **Input validation**: All calendar components validate year/month/day ranges before conversion. Do not use `eval`, `exec`, or `pickle` on untrusted input in library code.
+- **Logging**: Do not log environment variables, auth headers, or full user paths by default.
+
+## Threat model (library)
+
+Pyroj is a date conversion library; it does not execute network calls or subprocesses. Primary risks are incorrect date arithmetic (mitigated by tests) and unsafe string formatting if user-controlled format strings are ever added—prefer fixed token maps for formatting APIs.
