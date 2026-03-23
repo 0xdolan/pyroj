@@ -1,1 +1,2 @@
-persiantools==1.5.1
+# Runtime: Python 3.10+ standard library only (no pip dependencies).
+# Development: pip install -e ".[dev]"
