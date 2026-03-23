@@ -293,5 +293,6 @@ def test_convert_rejects_bool_and_ranges() -> None:
 
 - All formulas are deterministic for the supported range.
 - Islamic results are tabular, not observational.
-- Current public API is date-level; full datetime/fractional-day API is planned.
+- Public API now includes datetime/fractional-day JDN helpers:
+  `gregorian_datetime_to_jdn` and `jdn_to_gregorian_datetime`, plus `KurdishDate.from_jdn` / `to_jdn`.
 - Locale strings come from `pyroj/locales/catalog.json`; numeric conversion logic is independent from locale labels.

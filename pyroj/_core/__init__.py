@@ -1,6 +1,7 @@
 """Internal calendar math (Julian day hub). Public API is in `pyroj.kurdish`."""
 
 from pyroj._core.convert import (
+    gregorian_datetime_to_jdn,
     gregorian_to_jdn,
     gregorian_weekday_to_persian_weekday,
     is_gregorian_leap,
@@ -8,6 +9,7 @@ from pyroj._core.convert import (
     is_persian_leap_year,
     islamic_to_jdn,
     jdn_to_gregorian,
+    jdn_to_gregorian_datetime,
     jdn_to_islamic,
     jdn_to_persian,
     persian_days_in_month,
@@ -15,11 +17,13 @@ from pyroj._core.convert import (
 )
 
 __all__ = [
+    "gregorian_datetime_to_jdn",
     "gregorian_to_jdn",
     "gregorian_weekday_to_persian_weekday",
     "is_gregorian_leap",
     "is_persian_leap_year",
     "is_islamic_leap_year",
+    "jdn_to_gregorian_datetime",
     "jdn_to_gregorian",
     "jdn_to_persian",
     "jdn_to_islamic",

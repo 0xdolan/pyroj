@@ -7,7 +7,7 @@ This matches the KurdishDate TypeScript reference and legacy pyroj behavior.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, datetime
 from enum import Enum, auto
 
 from pyroj._core.convert import (
@@ -17,6 +17,7 @@ from pyroj._core.convert import (
     gregorian_to_jdn,
     islamic_to_jdn,
     jdn_to_gregorian,
+    jdn_to_gregorian_datetime,
     jdn_to_islamic,
     jdn_to_persian,
     persian_days_in_month,
@@ -113,6 +114,22 @@ class KurdishDate:
         """Convert to a proleptic Gregorian :class:`datetime.date`."""
         y, m, d = jdn_to_gregorian(self._jdn)
         return date(y, m, d)
+
+    @classmethod
+    def from_jdn(
+        cls, jdn: float, *, era: KurdishEra = KurdishEra.SOLAR_PERSIAN_OFFSET
+    ) -> KurdishDate:
+        """Build KurdishDate from Julian Day Number (JDN)."""
+        py, pm, pd = jdn_to_persian(jdn)
+        return cls(py + KURDISH_SOLAR_YEAR_OFFSET, pm, pd, era=era)
+
+    def to_jdn(self) -> float:
+        """Return Julian Day Number (JDN) for this Kurdish date at local midnight."""
+        return self._jdn
+
+    def to_datetime(self) -> datetime:
+        """Return Gregorian naive datetime at midnight for this Kurdish date."""
+        return jdn_to_gregorian_datetime(self._jdn)
 
     def to_persian(self) -> tuple[int, int, int]:
         """Persian (Jalali) ``(year, month, day)``."""

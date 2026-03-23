@@ -53,3 +53,10 @@ def test_kurdish_rejects_bool_and_year_bounds() -> None:
         KurdishDate.from_kurdish_solar(2718, True, 21)  # type: ignore[arg-type]
     with pytest.raises(PyrojRangeError):
         KurdishDate.from_kurdish_solar(10000, 1, 1)
+
+
+def test_kurdish_to_from_jdn_round_trip() -> None:
+    kd = KurdishDate.from_kurdish_solar(2718, 1, 21)
+    jdn = kd.to_jdn()
+    out = KurdishDate.from_jdn(jdn)
+    assert out == kd

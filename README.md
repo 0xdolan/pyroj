@@ -49,6 +49,20 @@ assert a == b
 assert a.to_gregorian().isoformat() == "2018-04-10"
 ```
 
+### JDN and datetime helpers
+
+```python
+from datetime import datetime
+from pyroj import KurdishDate, gregorian_datetime_to_jdn, jdn_to_gregorian_datetime
+
+dt = datetime(2018, 4, 10, 6, 30, 15, 123456)
+jdn = gregorian_datetime_to_jdn(dt)
+assert jdn_to_gregorian_datetime(jdn) == dt
+
+kd = KurdishDate.from_jdn(jdn)
+assert isinstance(kd.to_jdn(), float)
+```
+
 ## Locales and safe formatting
 
 Month and weekday names are available for **English**, **Kurdish (Kurmanji-style Arabic script)**, **Persian (Farsi)**, **Turkish**, and **Arabic**. Gregorian weekday lists use **Monday → Sunday**; Kurdish / Persian / Islamic use **Saturday → Friday** (same indexing as the KurdishDate reference).

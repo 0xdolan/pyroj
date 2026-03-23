@@ -7,7 +7,7 @@ Date-only arithmetic uses the same numeric model as ``KurdishDate/src/dateConver
 from __future__ import annotations
 
 import math
-from datetime import date
+from datetime import date, datetime, timedelta
 
 from pyroj.exceptions import PyrojRangeError, PyrojValueError
 
@@ -99,6 +99,30 @@ def jdn_to_gregorian(jdn: float) -> tuple[int, int, int]:
     month = int(math.floor(((day_of_year + leapadj) * 12 + 373) / 367))
     day = int(wjd - gregorian_to_jdn(year, month, 1) + 1)
     return year, month, day
+
+
+def gregorian_datetime_to_jdn(dt: datetime) -> float:
+    """Gregorian naive datetime to JDN, including fractional day."""
+    if not isinstance(dt, datetime):
+        raise PyrojValueError("dt must be datetime.datetime")
+    base = gregorian_to_jdn(dt.year, dt.month, dt.day)
+    seconds = dt.hour * 3600 + dt.minute * 60 + dt.second + dt.microsecond / 1_000_000
+    return base + seconds / 86400
+
+
+def jdn_to_gregorian_datetime(jdn: float) -> datetime:
+    """JDN to Gregorian naive datetime (microsecond precision)."""
+    jdn = _require_finite_number("jdn", jdn)
+    y, m, d = jdn_to_gregorian(jdn)
+    day_start = math.floor(jdn - 0.5) + 0.5
+    frac = jdn - day_start
+    total_microseconds = int(round(frac * 86_400_000_000))
+    if total_microseconds >= 86_400_000_000:
+        total_microseconds = 0
+        base = datetime(y, m, d) + timedelta(days=1)
+        return base
+    seconds, microseconds = divmod(total_microseconds, 1_000_000)
+    return datetime(y, m, d) + timedelta(seconds=seconds, microseconds=microseconds)
 
 
 def is_persian_leap_year(year: int) -> bool:

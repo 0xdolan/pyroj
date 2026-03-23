@@ -2,7 +2,7 @@
   "meta": {
     "project": "pyroj",
     "version": "1.2.0-plan-sync",
-    "updated_at": "2026-03-22",
+    "updated_at": "2026-03-23",
     "source_of_truth": "docs/REFACTOR_TASKMASTER.json",
     "branch_strategy": "feature work on refactor/* or feature/* branches, merge to develop, release from main",
     "default_source_branch": "develop",
@@ -26,14 +26,14 @@
       "id": "T2",
       "title": "Core conversion engine",
       "priority": "high",
-      "status": "in_progress",
+      "status": "completed",
       "subtasks": [
         { "id": "T2.1", "title": "Gregorian <-> JDN conversion", "status": "completed" },
         { "id": "T2.2", "title": "Persian (Jalali) <-> JDN conversion", "status": "completed" },
         { "id": "T2.3", "title": "Islamic (tabular) <-> JDN conversion", "status": "completed" },
         { "id": "T2.4", "title": "Strict validation and error contract in conversion APIs", "status": "completed" },
-        { "id": "T2.5", "title": "Datetime/fractional-day support", "status": "pending" },
-        { "id": "T2.6", "title": "Public from_jdn/to_jdn helper APIs", "status": "pending" }
+        { "id": "T2.5", "title": "Datetime/fractional-day support", "status": "completed" },
+        { "id": "T2.6", "title": "Public from_jdn/to_jdn helper APIs", "status": "completed" }
       ]
     },
     {

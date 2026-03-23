@@ -1,3 +1,4 @@
+from pyroj._core.convert import gregorian_datetime_to_jdn, jdn_to_gregorian_datetime
 from pyroj.exceptions import PyrojError, PyrojRangeError, PyrojValueError
 from pyroj.formatting import (
     format_calendar_date,
@@ -33,11 +34,13 @@ __all__ = [
     "PyrojValueError",
     "format_calendar_date",
     "format_iso_date",
+    "gregorian_datetime_to_jdn",
     "get_locale",
     "gregorian_to_islamic",
     "gregorian_to_persian",
     "islamic_to_gregorian",
     "persian_to_gregorian",
+    "jdn_to_gregorian_datetime",
     "to_locale_digits",
     "validate_pattern_safe",
 ]

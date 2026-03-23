@@ -1,14 +1,16 @@
 """Golden values aligned with KurdishDate (TypeScript) for 2018-04-10."""
 
-from datetime import date
+from datetime import date, datetime
 
 import pytest
 
 from pyroj._core.convert import (
+    gregorian_datetime_to_jdn,
     gregorian_to_jdn,
     gregorian_weekday_to_persian_weekday,
     islamic_to_jdn,
     jdn_to_gregorian,
+    jdn_to_gregorian_datetime,
     jdn_to_islamic,
     jdn_to_persian,
     js_weekday_from_date,
@@ -56,3 +58,10 @@ def test_convert_rejects_bool_and_ranges() -> None:
         persian_to_jdn(1397, 12, 30)
     with pytest.raises(PyrojRangeError):
         islamic_to_jdn(1439, 13, 1)
+
+
+def test_gregorian_datetime_fractional_jdn_round_trip() -> None:
+    dt = datetime(2018, 4, 10, 6, 30, 15, 123456)
+    jdn = gregorian_datetime_to_jdn(dt)
+    out = jdn_to_gregorian_datetime(jdn)
+    assert abs((out - dt).total_seconds()) < 0.00002
