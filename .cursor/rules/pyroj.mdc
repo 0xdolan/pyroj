@@ -27,5 +27,5 @@ alwaysApply: false
 
 - `docs/ARCHITECTURE.md` — design.
 - `pyroj/locales/catalog.json` — locale month/weekday strings.
-- `docs/TODO.md` — active backlog.
-- `docs/REFACTOR_TASKMASTER.json` — machine-readable tasks for future planning and tracking.
+- `docs/REFACTOR_TASKMASTER.json` — canonical roadmap and machine-readable tasks.
+- `docs/CALCULATION_METHODS.md` — detailed conversion formulas and worked examples for researchers.

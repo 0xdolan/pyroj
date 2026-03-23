@@ -85,6 +85,8 @@ assert cal2.to_gregorian().isoformat() == "2020-12-28"
 ## Documentation
 
 - `docs/ARCHITECTURE.md` — design overview (eras, JDN hub)
+- `docs/CALCULATION_METHODS.md` — full formulas, derivations, and worked examples
+- `docs/REFACTOR_TASKMASTER.json` — canonical detailed task roadmap
 
 ## License
 
