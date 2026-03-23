@@ -1,0 +1,29 @@
+---
+description: Pyroj v2 — Python datetime-only calendar library conventions
+globs: pyroj/**/*.py
+alwaysApply: false
+---
+
+# Pyroj development rules
+
+## Scope
+
+- **stdlib only** for runtime: `datetime`, `logging`, `enum`, `typing`, `dataclasses`. Implement Persian (Jalali), tabular Islamic, and Julian-day math in pure Python—no `persiantools`, `hijri`, or similar on the default code path.
+- **Security**: Never commit secrets, API keys, tokens, or personal MCP configuration. Ignore `.cursor/mcp.json` locally; use `.cursor/mcp.json.example` as a template only.
+- **Errors**: Use project-specific exceptions (`PyrojValueError`, `PyrojRangeError`) for invalid dates; mirror `datetime` behavior for valid ranges.
+- **Logging**: `logging.getLogger(__name__)`; no f-strings with secrets; DEBUG behind explicit flags.
+
+## Kurdish calendar
+
+- Support **`KurdishEra`** explicitly: default solar calendar aligns with **Persian year + 1321** (same as legacy `Rojjmer` and the `KurdishDate` TypeScript reference in this monorepo). Do not silently mix with the **612 BCE / Nineveh** year count from historical literature—expose as a separate era if implemented.
+- Weekday naming: Kurdish week starts **Saturday** in traditional usage; align with tests and `KurdishDate` locale tables.
+
+## Style
+
+- PEP 8, type hints on public APIs, docstrings on public modules/classes/functions.
+- Prefer small pure functions for JDN conversion; avoid a single 2000-line module.
+
+## References
+
+- `docs/ARCHITECTURE.md` — design.
+- `docs/REFACTOR_TASKMASTER.json` — task breakdown for Task Master AI.

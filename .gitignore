@@ -102,3 +102,10 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Cursor — local MCP config may contain paths or tokens; keep example only in repo
+.cursor/mcp.json
+
+# Local environment / secrets
+*.pem
+secrets/
