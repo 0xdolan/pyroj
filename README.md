@@ -33,6 +33,34 @@ assert a == b
 assert a.to_gregorian().isoformat() == "2018-04-10"
 ```
 
+## Locales and safe formatting
+
+Month and weekday names are available for **English**, **Kurdish (Kurmanji-style Arabic script)**, **Persian (Farsi)**, **Turkish**, and **Arabic**. Gregorian weekday lists use **Monday → Sunday**; Kurdish / Persian / Islamic use **Saturday → Friday** (same indexing as the KurdishDate reference).
+
+Formatting uses **fixed tokens only** (no `str.format` fields, no `{braces}`, no `%` — see `validate_pattern_safe`). Tokens include `YYYY`, `MM`, `DD`, `MMMM`, `MMM`, `dddd`, `ddd`, `dd`, `d`, `WW`.
+
+```python
+from datetime import date
+from pyroj import (
+    CalendarKind,
+    KurdishDate,
+    LocaleId,
+    format_calendar_date,
+    format_iso_date,
+    get_locale,
+    to_locale_digits,
+)
+
+kd = KurdishDate.from_gregorian(date(2018, 4, 10))
+print(format_iso_date(kd, locale=LocaleId.EN))
+print(format_calendar_date(kd, "YYYY MMMM (dddd)", calendar=CalendarKind.KURDISH, locale=LocaleId.KU))
+print(to_locale_digits("2718", get_locale(LocaleId.FA)))
+```
+
+## Continuous integration
+
+GitHub Actions runs **pytest**, **ruff**, and **mypy** on Python 3.10–3.13 (see `.github/workflows/ci.yml`). Optional: `pre-commit install` using `.pre-commit-config.yaml`.
+
 ## Legacy `Rojjmer`
 
 The previous API remains for compatibility; prefer `KurdishDate` for new code.
@@ -52,7 +80,7 @@ assert cal2.to_gregorian().isoformat() == "2020-12-28"
 ## Documentation
 
 - `docs/ARCHITECTURE.md` — eras, JDN hub, security notes
-- `docs/REFACTOR_TASKMASTER.json` — task list for larger features (locales, formatting, CI)
+- `docs/REFACTOR_TASKMASTER.json` — task list for follow-up work
 
 ## License
 
