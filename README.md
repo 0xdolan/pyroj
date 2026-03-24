@@ -143,4 +143,4 @@ uv pip install -e .
 GitHub Actions runs **pytest**, **ruff**, and **mypy** on Python 3.10–3.13 (see `.github/workflows/ci.yml`).
 
 ## License
-MIT.
+GPL.
