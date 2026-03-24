@@ -1,10 +1,128 @@
 # pyroj (Kurdish Calendar)
 
-**pyroj** is a Python library for the Kurdish **solar** calendar and conversions to/from **Gregorian**, **Persian (Jalali)**, and **tabular Islamic** dates. **Runtime dependencies: none** — only the Python standard library (`datetime`, etc.). Calendar math uses the same Julian-day hub as the **KurdishDate** TypeScript reference (see sibling folder in the monorepo) in the Kurdistanica-style model (**Kurdish year = Persian year + 1321**).
+**pyroj** is the definitive Python library for the Kurdish **solar** calendar. It allows for highly accurate date conversions to and from **Gregorian**, **Persian (Jalali)**, and **Tabular Islamic** dates. 
+
+Built exclusively under the Python standard library, it inherits natively from Python's own `datetime` ecosystem, serving as a dynamic, robust drop-in replacement for any application. **Runtime dependencies: none.**
 
 - **Python**: 3.10+
-- **Dependency/tool workflow**: `uv` + `pyproject.toml` (no `requirements.txt`)
-- **Supported year range**: `1..9999` for public APIs (aligned with Python `datetime.date`)
+- **Dependency/tool workflow**: `uv` + `pyproject.toml`
+- **Supported year range**: `1..9999` (aligned with Python `datetime.date`)
+
+> **[Research Reference & Calculation Details]**  
+> For academics, developers, and researchers seeking the complete historical methodology, epoch derivations, and algorithmic calculations used to yield accurate Kurdish dates, please refer to the detailed [Kurdish Date Calculation Research](docs/KURDISH_DATE_CALCULATION.md).
+
+## Quick Start
+
+`KurdishDate` and `KurdishDateTime` inherit natively from python's built-in `datetime.date` and `datetime.datetime`. Any standard operation you perform on Python dates can be seamlessly performed on Kurdish dates!
+
+```bash
+uv pip install pyroj
+# or
+pip install pyroj
+```
+
+### Basic Creation and Conversions
+```python
+from datetime import date
+from pyroj.kurdish import KurdishDate
+
+# 1. Start from a Gregorian Date
+d = date(2026, 3, 23)
+kd = KurdishDate.from_gregorian(d)
+
+print(kd.year, kd.month, kd.day)  # Output: 2726 1 3
+
+# 2. Or initialize natively in Kurdish
+kd_native = KurdishDate(2726, 1, 3)
+
+# 3. Effortless Conversions to other systems
+print(kd.to_gregorian())          # Output: 2026-03-23
+print(kd.to_persian())            # Output: (1405, 1, 3)
+print(kd.to_islamic())            # Output: (1447, 10, 4)
+```
+
+### Advanced Date Mathematics
+Because `pyroj` extends standard lib classes natively, you can rely on robust Python implementations for adding/subtracting ranges without worrying about leap years or skipped months!
+
+```python
+from datetime import timedelta
+from pyroj.kurdish import KurdishDateTime
+
+# Adding 5 days over month boundaries calculates correctly
+kd = KurdishDate(2726, 1, 30)
+kd_new = kd + timedelta(days=5)
+
+print(kd_new)  # Output: 2726-02-04
+
+# Full Time/Datetime wrappers exist
+kdt = KurdishDateTime(2726, 1, 3, hour=15, minute=30, second=0)
+
+kdt_shuffled = kdt - timedelta(hours=36)
+print(kdt_shuffled) # Output: 2726-01-02 03:30:00
+```
+
+## Beautiful Native Formatting (`strftime`)
+
+Formatting strings out of the box matches Python's `%` standard exactly. Furthermore, `pyroj` natively maps out month and weekday translations depending on your selected locale.
+
+Supported `LocaleId` dialects include `KU` (Sorani / Kurdish-Arabic script), `AR` (Arabic), `FA` (Persian), `TR` (Turkish), and `EN` (English).
+
+```python
+from pyroj.kurdish import KurdishDate
+from pyroj.locales import LocaleId
+
+kd = KurdishDate(2726, 1, 25)
+
+# Standard English representation
+print(kd.strftime("%A, %d %B %Y", locale=LocaleId.EN))
+# Output: Tuesday, 25 Xakelêwe 2726
+
+# Sorani execution
+print(kd.strftime("%A, %d %B %Y", locale=LocaleId.KU))
+# Output: سێشەممە, 25 خاکەلێوە 2726
+
+# Persian representation
+print(kd.strftime("%A, %d %B %Y", locale=LocaleId.FA))
+# Output: سه‌شنبه, 25 خاکِ‌لِیوَه 2726
+
+# Available formats: 
+# %Y (4-digit Year), %y (2-digit Year)
+# %B (Full Month), %b (Short Month), %m (2-digit Month), %-m (1-digit Month)
+# %A (Full Weekday), %a (Short Weekday), %w (1-7 Index), %-w (1-7 Number)
+# %d (2-digit Day), %-d (1-digit Day)
+# %H:%M:%S etc. for KurdishDateTime.
+```
+
+## Historical Eras
+
+Historically, different subsets of researchers align `Year 1` of the Kurdish Calendar differently. `pyroj` accommodates this dynamically via the `KurdishEra` Enum:
+
+1. **Median Empire Baseline** `SOLAR_PERSIAN_OFFSET` (Default): Evaluates the standard Kurdipedia offset where `Kurdish Year = Jalali Year + 1321`. (Anchored near 700 BC).
+2. **Fall of Nineveh Epoch** `FALL_OF_NINEVEH`: Tracks the exact 612 BC battle of Nineveh where `Kurdish Year = Jalali Year + 1233`.
+
+```python
+from pyroj.kurdish import KurdishDate, KurdishEra
+
+# Calculates the year offset depending on standard
+kd_nineveh = KurdishDate(2638, 1, 3, era=KurdishEra.FALL_OF_NINEVEH)
+print(kd_nineveh.to_gregorian()) # Extrapolates out correctly
+```
+
+## Native Tooling (JDN Helpers & Timestamps)
+
+You can convert any Gregorian or Julian representation efficiently down into `int` / `float` structs.
+
+```python
+from pyroj._core.convert import gregorian_datetime_to_jdn, jdn_to_gregorian_datetime
+from pyroj.kurdish import KurdishDate
+
+# Extract absolute Julian Day Number directly
+kd = KurdishDate(2726, 1, 1)
+print(kd.to_jdn())  # Returns Absolute JDN float
+
+# Restore from JDN
+kd_restored = KurdishDate.from_jdn(2461122.5)
+```
 
 ## Development setup (uv + ruff)
 
@@ -21,102 +139,8 @@ Install the package locally for development:
 uv pip install -e .
 ```
 
-## Quick start
-
-```python
-from datetime import date
-from pyroj import KurdishDate, gregorian_to_islamic, gregorian_to_persian
-
-d = date(2018, 4, 10)
-kd = KurdishDate.from_gregorian(d)
-print(kd.year, kd.month, kd.day)   # 2718 1 21
-print(kd.to_persian())             # (1397, 1, 21)
-print(kd.to_islamic())             # (1439, 7, 24)
-print(gregorian_to_persian(d))
-print(gregorian_to_islamic(d))
-```
-
-### `datetime.date`-style usage
-
-`KurdishDate` is an immutable value object: comparison, `hash`, `replace`, and conversion helpers behave like a calendar-specific `date`.
-
-```python
-from pyroj import KurdishDate
-
-a = KurdishDate.from_persian(1397, 1, 21)
-b = KurdishDate.from_kurdish_solar(2718, 1, 21)
-assert a == b
-assert a.to_gregorian().isoformat() == "2018-04-10"
-```
-
-### JDN and datetime helpers
-
-```python
-from datetime import datetime
-from pyroj import KurdishDate, gregorian_datetime_to_jdn, jdn_to_gregorian_datetime
-
-dt = datetime(2018, 4, 10, 6, 30, 15, 123456)
-jdn = gregorian_datetime_to_jdn(dt)
-assert jdn_to_gregorian_datetime(jdn) == dt
-
-kd = KurdishDate.from_jdn(jdn)
-assert isinstance(kd.to_jdn(), float)
-```
-
-## Locales and safe formatting
-
-Month and weekday names are available for **English**, **Kurdish (Kurmanji-style Arabic script)**, **Persian (Farsi)**, **Turkish**, and **Arabic**. Gregorian weekday lists use **Monday → Sunday**; Kurdish / Persian / Islamic use **Saturday → Friday** (same indexing as the KurdishDate reference).
-
-Formatting uses **fixed tokens only** (no `str.format` fields, no `{braces}`, no `%` — see `validate_pattern_safe`). Tokens include `YYYY`, `MM`, `DD`, `MMMM`, `MMM`, `dddd`, `ddd`, `dd`, `d`, `WW`.
-
-```python
-from datetime import date
-from pyroj import (
-    CalendarKind,
-    KurdishDate,
-    LocaleId,
-    format_calendar_date,
-    format_iso_date,
-    get_locale,
-    to_locale_digits,
-)
-
-kd = KurdishDate.from_gregorian(date(2018, 4, 10))
-print(format_iso_date(kd, locale=LocaleId.EN))
-print(format_calendar_date(kd, "YYYY MMMM (dddd)", calendar=CalendarKind.KURDISH, locale=LocaleId.KU))
-print(to_locale_digits("2718", get_locale(LocaleId.FA)))
-```
-
 ## Continuous integration
-
 GitHub Actions runs **pytest**, **ruff**, and **mypy** on Python 3.10–3.13 (see `.github/workflows/ci.yml`).
 
-## Locale data
-
-Editable month and weekday strings live in **`pyroj/locales/catalog.json`** (loaded at import). To add or adjust a locale, edit that file and keep the same JSON shape (`locales.<key>.gregorian|persian|kurdish|islamic` plus `digits` and `am_pm`).
-
-## Legacy `Rojjmer`
-
-The previous API remains for compatibility; prefer `KurdishDate` for new code.
-
-```python
-from pyroj.rojjmer import Rojjmer
-
-cal = Rojjmer(2018, 4, 10)          # Gregorian
-kd = cal.to_kurdish()               # KurdishDate
-assert kd.year == 2718
-
-# to_gregorian() treats (year, month, day) as Persian (Jalali), like old JalaliDate(...)
-cal2 = Rojjmer(1399, 10, 8)
-assert cal2.to_gregorian().isoformat() == "2020-12-28"
-```
-
-## Documentation
-
-- `docs/ARCHITECTURE.md` — design overview (eras, JDN hub)
-- `docs/CALCULATION_METHODS.md` — full formulas, derivations, and worked examples
-- `docs/REFACTOR_TASKMASTER.json` — canonical detailed task roadmap
-
 ## License
-
 MIT.

@@ -13,10 +13,8 @@ This document defines how the refactored **pyroj** library aligns with Python’
 ## Canonical time model
 
 1. **Instant in civil time**: Represented as `datetime.datetime` (timezone-aware when the user supplies a `tzinfo`; naive when they do not). All arithmetic that involves hours/minutes/seconds/microseconds uses `timedelta` and follows `datetime` semantics.
-2. **Date-only**: Represented as `datetime.date` for the Gregorian civil date of that instant in the same timezone context (or UTC for conversions that are defined only on the date part).
-3. **Julian day (JDN)**: Internal hub for converting between Gregorian, Persian (Jalali), and tabular Islamic—same numerical approach as the reference implementation in `KurdishDate/src/dateConverter.ts` in this workspace. Floating JDN includes the fractional day for time-of-day.
-
-This mirrors the **KurdishDate** TypeScript project: one Julian day value updates all calendar views.
+2. **Date-only**: Represented as `datetime.date` for the Gregorian civil date of that instant in the same timezone context.
+3. **Julian day (JDN)**: Internal hub for converting between Gregorian, Persian (Jalali), and tabular Islamic natively. Floating JDN includes the fractional day for time-of-day.
 
 ## Kurdish year: two documented eras (must not be conflated)
 
@@ -24,7 +22,7 @@ Historical sources describe different epoch conventions:
 
 | Mode | Rule (conceptual) | Used by |
 |------|-------------------|---------|
-| **Solar offset (default)** | Kurdish year = Persian (Jalali) year + **1321**; month/day match Persian solar structure. | Current `Rojjmer`, `kurdish-calendar.py`, `KurdishDate` TS, Kurdipedia-style outputs (e.g. 2726 for 1405 + 1321). |
+| **Solar offset (default)** | Kurdish year = Persian (Jalali) year + **1321**; month/day match Persian solar structure. | Default offset calculations (e.g. 2726 from 1405). |
 | **Median / Nineveh era** | Year count tied to **612 BCE** and vernal equinox (Newroz); formulas such as `1 + (gregorian_year + 611)` appear in literature—**not** interchangeable with the +1321 solar calendar without explicit conversion. | Academic / cultural articles (Roshani, etc.). |
 
 The v2 API must expose this as an explicit **`KurdishEra`** (or similarly named) enum so users and tests never mix eras silently.
@@ -81,12 +79,5 @@ Naming follows **PEP 8**; `KurdishDate` mirrors `datetime.date` where practical 
 
 ## Testing strategy
 
-- **Golden tests**: Known Gregorian ↔ Persian ↔ Kurdish ↔ Islamic tuples from `KurdishDate` tests and `kurdish-calendar.py` samples.
-- **Property tests** (optional, `hypothesis` in dev deps only): invariants such as round-trip `gregorian -> jdn -> gregorian`.
+- **Golden tests**: Known Gregorian ↔ Persian ↔ Kurdish ↔ Islamic conversions.
 - **Edge cases**: Persian leap years (mod 128), Islamic year boundaries, Kurdish month 12 length (29/30).
-
-## References in this repo
-
-- `../KurdishDate/src/dateConverter.ts` — JDN hub, Persian/Islamic/Gregorian.
-- `../kurdish-calendar/kurdish-calendar.py` — Emacs-ported calendar, Kurdish ↔ Persian offset.
-- Legacy `pyroj/pyroj/rojjmer.py` — to be superseded; depended on `persiantools`.
