@@ -65,7 +65,7 @@ print(kdt_shuffled) # Output: 2726-01-02 03:30:00
 
 Formatting strings out of the box matches Python's `%` standard exactly. Furthermore, `pyroj` natively maps out month and weekday translations depending on your selected locale.
 
-Supported `LocaleId` dialects include `KU` (Sorani / Kurdish-Arabic script), `AR` (Arabic), `FA` (Persian), `TR` (Turkish), and `EN` (English).
+Supported `LocaleId` dialects include `KMR` (Kurmanji / Kurdish-Latin script), `CKB` (Sorani / Kurdish-Arabic script), compatibility alias `KU` (maps to `CKB`), plus `AR` (Arabic), `FA` (Persian), `TR` (Turkish), and `EN` (English).
 
 ```python
 from pyroj.kurdish import KurdishDate
@@ -77,9 +77,13 @@ kd = KurdishDate(2726, 1, 25)
 print(kd.strftime("%A, %d %B %Y", locale=LocaleId.EN))
 # Output: Tuesday, 25 Xakelêwe 2726
 
-# Sorani execution
-print(kd.strftime("%A, %d %B %Y", locale=LocaleId.KU))
+# Sorani execution (Arabic-script Kurdish)
+print(kd.strftime("%A, %d %B %Y", locale=LocaleId.CKB))
 # Output: سێشەممە, 25 خاکەلێوە 2726
+
+# Kurmanji execution (Latin-script Kurdish)
+print(kd.strftime("%A, %d %B %Y", locale=LocaleId.KMR))
+# Output: Tuesday, 25 Xakelêw 2726
 
 # Persian representation
 print(kd.strftime("%A, %d %B %Y", locale=LocaleId.FA))
@@ -91,6 +95,14 @@ print(kd.strftime("%A, %d %B %Y", locale=LocaleId.FA))
 # %A (Full Weekday), %a (Short Weekday), %w (1-7 Index), %-w (1-7 Number)
 # %d (2-digit Day), %-d (1-digit Day)
 # %H:%M:%S etc. for KurdishDateTime.
+```
+
+String locale negotiation is also supported dynamically:
+
+```python
+print(kd.strftime("%B %Y", locale="kmr"))      # Kurmanji
+print(kd.strftime("%B %Y", locale="ckb"))      # Sorani
+print(kd.strftime("%B %Y", locale="ku"))       # Backward-compat alias -> CKB
 ```
 
 ## Historical Eras

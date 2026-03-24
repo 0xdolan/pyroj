@@ -10,7 +10,9 @@ class LocaleId(Enum):
     """Supported display locales."""
 
     EN = auto()  #: English (Latin)
-    KU = auto()  #: Kurdish (Kurmanji-style tables, Arabic script)
+    KU = auto()  #: Kurdish compatibility alias (maps to CKB data by default)
+    KMR = auto()  #: Kurdish Kurmanji (Latin script)
+    CKB = auto()  #: Kurdish Sorani (Arabic script)
     FA = auto()  #: Persian / Farsi
     TR = auto()  #: Turkish (Gregorian/Islamic Turkish; Kurdish solar Latin)
     AR = auto()  #: Arabic script (MSA-style month names where applicable)

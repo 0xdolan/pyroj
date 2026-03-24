@@ -12,7 +12,7 @@ from dataclasses import dataclass
 
 from pyroj.exceptions import PyrojValueError
 from pyroj.kurdish import KurdishDate
-from pyroj.locales.catalog import get_locale
+from pyroj.locales.catalog import get_locale_resolved
 from pyroj.locales.types import CalendarKind, LocaleData, LocaleId
 
 # Map standard strftime tokens
@@ -124,7 +124,7 @@ def format_calendar_date(
     pattern: str,
     *,
     calendar: CalendarKind = CalendarKind.KURDISH,
-    locale: LocaleId = LocaleId.EN,
+    locale: LocaleId | str = LocaleId.EN,
     use_locale_digits: bool = False,
 ) -> str:
     """
@@ -140,7 +140,7 @@ def format_calendar_date(
     if len(pattern) > _MAX_PATTERN_LEN:
         raise PyrojValueError(f"pattern exceeds max length {_MAX_PATTERN_LEN}")
 
-    loc = get_locale(locale)
+    loc = get_locale_resolved(locale)
     validate_pattern_safe(pattern)
     ctx = _Render(kd=kd, kind=calendar, locale=loc)
     out: list[str] = []
@@ -159,7 +159,7 @@ def format_iso_date(
     kd: KurdishDate,
     *,
     calendar: CalendarKind = CalendarKind.KURDISH,
-    locale: LocaleId = LocaleId.EN,
+    locale: LocaleId | str = LocaleId.EN,
     use_locale_digits: bool = False,
 ) -> str:
     """``%Y-%m-%d`` in the selected calendar’s year/month/day."""

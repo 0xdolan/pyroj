@@ -1,6 +1,6 @@
 """Locale tables for month and weekday names (Gregorian, Persian, Kurdish solar, Islamic)."""
 
-from pyroj.locales.catalog import LOCALE_BY_ID, get_locale
+from pyroj.locales.catalog import LOCALE_BY_ID, get_locale, get_locale_resolved, resolve_locale
 from pyroj.locales.types import CalendarKind, CalendarNames, LocaleData, LocaleId
 
 __all__ = [
@@ -10,4 +10,6 @@ __all__ = [
     "LocaleData",
     "LocaleId",
     "get_locale",
+    "get_locale_resolved",
+    "resolve_locale",
 ]

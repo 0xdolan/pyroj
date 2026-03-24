@@ -7,6 +7,7 @@ import pytest
 from pyroj import (
     CalendarKind,
     KurdishDate,
+    KurdishDateTime,
     LocaleId,
     format_calendar_date,
     format_iso_date,
@@ -44,11 +45,48 @@ def test_format_kurdish_ku_locale_month() -> None:
     assert "خاک" in s
 
 
+def test_format_kurdish_kmr_locale_month() -> None:
+    kd = KurdishDate.from_gregorian(date(2018, 4, 10))
+    s = format_calendar_date(
+        kd,
+        "%B",
+        calendar=CalendarKind.KURDISH,
+        locale=LocaleId.KMR,
+    )
+    assert "Xakel" in s
+
+
+def test_format_kurdish_ckb_locale_month_from_code() -> None:
+    kd = KurdishDate.from_gregorian(date(2018, 4, 10))
+    s = format_calendar_date(
+        kd,
+        "%B",
+        calendar=CalendarKind.KURDISH,
+        locale="ckb",
+    )
+    assert "خاک" in s
+
+
 def test_locale_digits() -> None:
     loc = get_locale(LocaleId.FA)
     out = to_locale_digits("2718", loc)
     assert out == "۲۷۱۸"
     assert all(ord(ch) > 127 for ch in out)
+
+
+def test_kmr_and_ckb_digits_differ() -> None:
+    kd = KurdishDate.from_gregorian(date(2018, 4, 10))
+    kmr = format_calendar_date(kd, "%Y", locale=LocaleId.KMR, use_locale_digits=True)
+    ckb = format_calendar_date(kd, "%Y", locale=LocaleId.CKB, use_locale_digits=True)
+    assert kmr == "2718"
+    assert ckb == "٢٧١٨"
+
+
+def test_datetime_percent_p_uses_locale_am_pm() -> None:
+    kdt_am = KurdishDateTime(2726, 1, 3, hour=10, minute=15, second=0)
+    kdt_pm = KurdishDateTime(2726, 1, 3, hour=15, minute=15, second=0)
+    assert "berî niweroj" in kdt_am.strftime("%p", locale=LocaleId.KMR)
+    assert "د.ن" in kdt_pm.strftime("%p", locale=LocaleId.CKB)
 
 
 def test_validate_pattern_rejects_braces() -> None:
