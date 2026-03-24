@@ -18,7 +18,7 @@ from pyroj.locales import CalendarKind, LocaleData, LocaleId, get_locale
 
 __title__ = "pyroj"
 __url__ = "https://github.com/dolanskurd/pyroj"
-__version__ = "1.2.0"
+__version__ = "1.2.1"
 __build__ = __version__
 __author__ = "Dolan Hêriş"
 __license__ = "MIT"
