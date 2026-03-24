@@ -234,13 +234,7 @@ class KurdishDate(date):
     def strftime(self, format: str, locale: LocaleId | str = LocaleId.EN) -> str:
         """Format building on standard % strftime directives, optionally with locale translation."""
         from pyroj.formatting import format_calendar_date
-        
-        # If passed string 'en', 'ku', convert to LocaleId if needed,
-        # though get_locale might handle it.
-        # But for safety:
-        if isinstance(locale, str):
-            locale = LocaleId(locale)
-            
+
         return format_calendar_date(self, format, locale=locale)
 
     def __format__(self, format_spec: str) -> str:
@@ -431,19 +425,21 @@ class KurdishDateTime(datetime):
 
     def strftime(self, format: str, locale: LocaleId | str = LocaleId.EN) -> str:
         """Format building on standard % strftime directives, with datetime extensions."""
+        from pyroj.locales.catalog import get_locale_resolved, resolve_locale
+
+        locale_id = resolve_locale(locale)
+        loc = get_locale_resolved(locale_id)
+
         # Replace time tokens manually, then dispatch date tokens to formatting
         date_pattern = format.replace('%H', f"{self.hour:02d}")
         date_pattern = date_pattern.replace('%I', f"{(self.hour % 12) or 12:02d}")
         date_pattern = date_pattern.replace('%M', f"{self.minute:02d}")
         date_pattern = date_pattern.replace('%S', f"{self.second:02d}")
         date_pattern = date_pattern.replace('%f', f"{self.microsecond:06d}")
-        date_pattern = date_pattern.replace('%p', "AM" if self.hour < 12 else "PM")
-        
-        if isinstance(locale, str):
-            locale = LocaleId(locale)
-            
+        date_pattern = date_pattern.replace('%p', loc.am_pm[0] if self.hour < 12 else loc.am_pm[1])
+
         from pyroj.formatting import format_calendar_date
-        return format_calendar_date(self.date(), date_pattern, locale=locale)
+        return format_calendar_date(self.date(), date_pattern, locale=locale_id)
 
     def __format__(self, format_spec: str) -> str:
         if not format_spec:

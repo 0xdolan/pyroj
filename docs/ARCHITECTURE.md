@@ -58,6 +58,8 @@ Naming follows **PEP 8**; `KurdishDate` mirrors `datetime.date` where practical 
 
 - Separate **script** (Arabic, Latin, etc.) from **dialect** (Kurmanji, Sorani, Hawrami, …).
 - Month and weekday tables live in data modules; no user-controlled format strings executed as code (formatting uses safe templates or `str.format` with fixed keys only).
+- Kurdish dialects are modeled explicitly as `kmr` and `ckb`; legacy `ku` remains a compatibility alias.
+- Locale lookup uses normalization + fallback (`kmr`/`ckb` + compatibility aliases such as `ku` and `ku-latn`, then `en` fallback) via a single resolver path.
 
 ## Error handling
 
