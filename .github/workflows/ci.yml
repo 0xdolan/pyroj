@@ -25,8 +25,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies
-        # This installs your package + dev dependencies using uv
-        run: uv pip install -e ".[dev]" --system
+        run: uv pip install -e ".[dev]"
 
       - name: Ruff
         run: uv run ruff check pyroj tests
