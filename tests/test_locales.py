@@ -28,6 +28,12 @@ def test_locale_ids_complete() -> None:
 def test_locale_resolution_aliases_and_fallback() -> None:
     assert resolve_locale("kmr") is LocaleId.KMR
     assert resolve_locale("ckb") is LocaleId.CKB
+    assert resolve_locale("sdh") is LocaleId.CKB
+    assert resolve_locale("lki") is LocaleId.CKB
+    assert resolve_locale("hac") is LocaleId.CKB
+    assert resolve_locale("zza") is LocaleId.KMR
+    assert resolve_locale("diq") is LocaleId.KMR
+    assert resolve_locale("kiu") is LocaleId.KMR
     assert resolve_locale("ku-latn") is LocaleId.KMR
     # Backward-compatible alias behavior.
     assert resolve_locale("ku") is LocaleId.CKB
