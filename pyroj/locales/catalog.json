@@ -246,6 +246,498 @@
         "pm"
       ]
     },
+    "kmr": {
+      "gregorian": {
+        "months": [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December"
+        ],
+        "months_short": [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec"
+        ],
+        "weekdays": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "weekdays_short": [
+          "Mon",
+          "Tue",
+          "Wed",
+          "Thu",
+          "Fri",
+          "Sat",
+          "Sun"
+        ],
+        "weekdays_min": [
+          "Mo",
+          "Tu",
+          "We",
+          "Th",
+          "Fr",
+          "Sa",
+          "Su"
+        ]
+      },
+      "persian": {
+        "months": [
+          "Farvardin",
+          "Ordibehesht",
+          "Khordad",
+          "Tir",
+          "Mordad",
+          "Shahrivar",
+          "Mehr",
+          "Aban",
+          "Azar",
+          "Dey",
+          "Bahman",
+          "Esfand"
+        ],
+        "months_short": [
+          "Far",
+          "Ord",
+          "Kho",
+          "Tir",
+          "Mor",
+          "Sha",
+          "Meh",
+          "Aba",
+          "Aza",
+          "Dey",
+          "Bah",
+          "Esf"
+        ],
+        "weekdays": [
+          "Saturday",
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday"
+        ],
+        "weekdays_short": [
+          "Sat",
+          "Sun",
+          "Mon",
+          "Tue",
+          "Wed",
+          "Thu",
+          "Fri"
+        ],
+        "weekdays_min": [
+          "Sa",
+          "Su",
+          "Mo",
+          "Tu",
+          "We",
+          "Th",
+          "Fr"
+        ]
+      },
+      "kurdish": {
+        "months": [
+          "Xakelêw",
+          "Gulan",
+          "Cozerdan",
+          "Pûşper",
+          "Gelawêj",
+          "Xermanan",
+          "Rezber",
+          "Gelarêzan",
+          "Sermawez",
+          "Befranbar",
+          "Rêbendan",
+          "Reşeme"
+        ],
+        "months_short": [
+          "Xak",
+          "Gul",
+          "Cozerd",
+          "Pûşper",
+          "Gelawêj",
+          "Xerman",
+          "Rezber",
+          "Gelarêz",
+          "Serma",
+          "Befran",
+          "Rêbend",
+          "Reşeme"
+        ],
+        "weekdays": [
+          "Saturday",
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday"
+        ],
+        "weekdays_short": [
+          "Sat",
+          "Sun",
+          "Mon",
+          "Tue",
+          "Wed",
+          "Thu",
+          "Fri"
+        ],
+        "weekdays_min": [
+          "Sa",
+          "Su",
+          "Mo",
+          "Tu",
+          "We",
+          "Th",
+          "Fr"
+        ]
+      },
+      "islamic": {
+        "months": [
+          "Muharram",
+          "Safar",
+          "Rabi' al-awwal",
+          "Rabi' al-Thani",
+          "Jumada al-awwal",
+          "Jumada al-Thani",
+          "Rajab",
+          "Sha'ban",
+          "Ramadan",
+          "Shawwal",
+          "Dhu al-Qi'dah",
+          "Dhu al-Hijjah"
+        ],
+        "months_short": [
+          "Muh",
+          "Saf",
+          "R-I",
+          "R-II",
+          "J-I",
+          "J-II",
+          "Raj",
+          "Sha",
+          "Ram",
+          "Shaw",
+          "ZQ",
+          "ZH"
+        ],
+        "weekdays": [
+          "Saturday",
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday"
+        ],
+        "weekdays_short": [
+          "Sat",
+          "Sun",
+          "Mon",
+          "Tue",
+          "Wed",
+          "Thu",
+          "Fri"
+        ],
+        "weekdays_min": [
+          "Sa",
+          "Su",
+          "Mo",
+          "Tu",
+          "We",
+          "Th",
+          "Fr"
+        ]
+      },
+      "digits": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ],
+      "am_pm": [
+        "berî niweroj",
+        "piştî niweroj"
+      ]
+    },
+    "ckb": {
+      "gregorian": {
+        "months": [
+          "یەنایر",
+          "فەبرایر",
+          "مارس",
+          "ئەپریل",
+          "مایۆ",
+          "یونیۆ",
+          "یولیۆ",
+          "ئۆغستەس",
+          "سێپتەمبەر",
+          "ئۆکتۆبەر",
+          "نۆڤەمبەر",
+          "دیسەمبەر"
+        ],
+        "months_short": [
+          "یەنایر",
+          "فەبرایر",
+          "مارس",
+          "ئەپریل",
+          "مایۆ",
+          "یونیۆ",
+          "یولیۆ",
+          "ئۆغستەس",
+          "سێپتەمبەر",
+          "ئۆکتۆبەر",
+          "نۆڤەمبەر",
+          "دیسەمبەر"
+        ],
+        "weekdays": [
+          "دووشەممە",
+          "سێشەممە",
+          "چوارشەممە",
+          "پێنجشەممە",
+          "هەینی",
+          "شەممە",
+          "یەکشەممە"
+        ],
+        "weekdays_short": [
+          "دوو",
+          "سێ",
+          "چوار",
+          "پێنج",
+          "هەینی",
+          "شەممە",
+          "یەک"
+        ],
+        "weekdays_min": [
+          "د",
+          "س",
+          "چ",
+          "پ",
+          "ه",
+          "ش",
+          "ی"
+        ]
+      },
+      "persian": {
+        "months": [
+          "فەرڤەردین",
+          "ئۆردیبێهێشت",
+          "خۆرداد",
+          "تیر",
+          "مۆرداد",
+          "شەهریڤەر",
+          "مێهر",
+          "ئابان",
+          "ئازەر",
+          "دێی",
+          "بەهمەن",
+          "ئێسفەند"
+        ],
+        "months_short": [
+          "فەر",
+          "ئۆرد",
+          "خۆرد",
+          "تیر",
+          "مۆرد",
+          "شەهر",
+          "مێهر",
+          "ئابا",
+          "ئازەر",
+          "دێی",
+          "بەهم",
+          "ئێسف"
+        ],
+        "weekdays": [
+          "شەممە",
+          "یەکشەممە",
+          "دووشەممە",
+          "سێشەممە",
+          "چوارشەممە",
+          "پێنجشەممە",
+          "هەینی"
+        ],
+        "weekdays_short": [
+          "شەممە",
+          "یەک",
+          "دوو",
+          "سێ",
+          "چوار",
+          "پێنج",
+          "هەینی"
+        ],
+        "weekdays_min": [
+          "ش",
+          "ی",
+          "د",
+          "س",
+          "چ",
+          "پ",
+          "ه"
+        ]
+      },
+      "kurdish": {
+        "months": [
+          "خاکەڵێوە",
+          "گوڵان",
+          "جۆزەردان",
+          "پووشپەڕ",
+          "گەلاوێژ",
+          "خەرمانان",
+          "ڕەزبەر",
+          "گەڵاڕێزان",
+          "سەرماوەز",
+          "بەفرانبار",
+          "ڕێبەندان",
+          "ڕەشەمێ"
+        ],
+        "months_short": [
+          "خاک",
+          "گوڵان",
+          "جۆزەرد",
+          "پووشپەڕ",
+          "گەلاوێژ",
+          "خەرمان",
+          "ڕەزبەر",
+          "گەڵاڕێز",
+          "سەرما",
+          "بەفران",
+          "ڕێبەند",
+          "ڕەشەمێ"
+        ],
+        "weekdays": [
+          "شەممە",
+          "یەکشەممە",
+          "دووشەممە",
+          "سێشەممە",
+          "چوارشەممە",
+          "پێنجشەممە",
+          "هەینی"
+        ],
+        "weekdays_short": [
+          "شەممە",
+          "یەک",
+          "دوو",
+          "سێ",
+          "چوار",
+          "پێنج",
+          "هەینی"
+        ],
+        "weekdays_min": [
+          "ش",
+          "ی",
+          "د",
+          "س",
+          "چ",
+          "پ",
+          "ه"
+        ]
+      },
+      "islamic": {
+        "months": [
+          "موحەڕڕەم",
+          "سەفەر",
+          "ڕەبیعەلئەووەل",
+          "ڕەبیعەلئەسسانی",
+          "جەمادەلئوولا",
+          "جومادەلئاخیر",
+          "ڕەجەب",
+          "شەعبان",
+          "ڕەمەزان",
+          "شەووال",
+          "زولقەعدە",
+          "زولحەججە"
+        ],
+        "months_short": [
+          "موح",
+          "سەف",
+          "ڕەبیع١",
+          "ڕەبیع٢",
+          "جەماد-١",
+          "جەماد-٢",
+          "ڕەج",
+          "شەعب",
+          "ڕەمەز",
+          "شەو",
+          "زولقەع",
+          "زولحەج"
+        ],
+        "weekdays": [
+          "شەممە",
+          "یەکشەممە",
+          "دووشەممە",
+          "سێشەممە",
+          "چوارشەممە",
+          "پێنجشەممە",
+          "هەینی"
+        ],
+        "weekdays_short": [
+          "شەممە",
+          "یەک",
+          "دوو",
+          "سێ",
+          "چوار",
+          "پێنج",
+          "هەینی"
+        ],
+        "weekdays_min": [
+          "ش",
+          "ی",
+          "د",
+          "س",
+          "چ",
+          "پ",
+          "ه"
+        ]
+      },
+      "digits": [
+        "٠",
+        "١",
+        "٢",
+        "٣",
+        "٤",
+        "٥",
+        "٦",
+        "٧",
+        "٨",
+        "٩"
+      ],
+      "am_pm": [
+        "ب.ن",
+        "د.ن"
+      ]
+    },
     "ku": {
       "gregorian": {
         "months": [
