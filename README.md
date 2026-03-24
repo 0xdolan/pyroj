@@ -9,7 +9,7 @@ Built exclusively under the Python standard library, it inherits natively from P
 - **Supported year range**: `1..9999` (aligned with Python `datetime.date`)
 
 > **[Research Reference & Calculation Details]**  
-> For academics, developers, and researchers seeking the complete historical methodology, epoch derivations, and algorithmic calculations used to yield accurate Kurdish dates, please refer to the detailed [Kurdish Date Calculation Research](docs/KURDISH_DATE_CALCULATION.md).
+> For academics, developers, and researchers seeking the complete historical methodology, epoch derivations, and algorithmic calculations used to yield accurate Kurdish dates, please refer to the detailed [Kurdish Date Calculation Research](docs/CALCULATION_METHODS.md).
 
 ## Quick Start
 
