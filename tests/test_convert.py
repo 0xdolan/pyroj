@@ -7,13 +7,11 @@ import pytest
 from pyroj._core.convert import (
     gregorian_datetime_to_jdn,
     gregorian_to_jdn,
-    gregorian_weekday_to_persian_weekday,
     islamic_to_jdn,
     jdn_to_gregorian,
     jdn_to_gregorian_datetime,
     jdn_to_islamic,
     jdn_to_persian,
-    js_weekday_from_date,
     persian_to_jdn,
     persian_weekday_from_gregorian,
 )
@@ -33,8 +31,6 @@ def test_kurdish_date_golden_april_10_2018() -> None:
     assert jdn_to_islamic(j) == (1439, 7, 24)
     assert 1397 + 1321 == 2718
     assert persian_weekday_from_gregorian(d) == 4
-    assert js_weekday_from_date(d) == 2  # Tuesday in JS
-    assert gregorian_weekday_to_persian_weekday(2) == 4
 
 
 def test_persian_round_trip() -> None:

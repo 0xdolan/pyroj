@@ -26,7 +26,7 @@ def test_format_gregorian_calendar_english() -> None:
     kd = KurdishDate.from_gregorian(date(2018, 4, 10))
     s = format_calendar_date(
         kd,
-        "YYYY-MMMM-DD-dddd",
+        "%Y-%B-%d-%A",
         calendar=CalendarKind.GREGORIAN,
         locale=LocaleId.EN,
     )
@@ -37,7 +37,7 @@ def test_format_kurdish_ku_locale_month() -> None:
     kd = KurdishDate.from_gregorian(date(2018, 4, 10))
     s = format_calendar_date(
         kd,
-        "MMMM",
+        "%B",
         calendar=CalendarKind.KURDISH,
         locale=LocaleId.KU,
     )
