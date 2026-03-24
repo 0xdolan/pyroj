@@ -8,11 +8,11 @@ are copied literally (Unicode-safe).
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 from pyroj.exceptions import PyrojValueError
 from pyroj.kurdish import KurdishDate
-from pyroj.locales.catalog import get_locale_resolved
+from pyroj.locales.catalog import get_kurdish_month_variant, get_locale_resolved
 from pyroj.locales.types import CalendarKind, LocaleData, LocaleId
 
 # Map standard strftime tokens
@@ -125,6 +125,7 @@ def format_calendar_date(
     *,
     calendar: CalendarKind = CalendarKind.KURDISH,
     locale: LocaleId | str = LocaleId.EN,
+    kurdish_variant: str | None = None,
     use_locale_digits: bool = False,
 ) -> str:
     """
@@ -141,6 +142,10 @@ def format_calendar_date(
         raise PyrojValueError(f"pattern exceeds max length {_MAX_PATTERN_LEN}")
 
     loc = get_locale_resolved(locale)
+    if calendar is CalendarKind.KURDISH and kurdish_variant is not None:
+        variant_names = get_kurdish_month_variant(locale, kurdish_variant)
+        if variant_names is not None:
+            loc = replace(loc, kurdish=variant_names)
     validate_pattern_safe(pattern)
     ctx = _Render(kd=kd, kind=calendar, locale=loc)
     out: list[str] = []
@@ -160,6 +165,7 @@ def format_iso_date(
     *,
     calendar: CalendarKind = CalendarKind.KURDISH,
     locale: LocaleId | str = LocaleId.EN,
+    kurdish_variant: str | None = None,
     use_locale_digits: bool = False,
 ) -> str:
     """``%Y-%m-%d`` in the selected calendar’s year/month/day."""
@@ -168,6 +174,7 @@ def format_iso_date(
         "%Y-%m-%d",
         calendar=calendar,
         locale=locale,
+        kurdish_variant=kurdish_variant,
         use_locale_digits=use_locale_digits,
     )
 

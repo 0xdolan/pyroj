@@ -67,6 +67,116 @@ def test_format_kurdish_ckb_locale_month_from_code() -> None:
     assert "خاک" in s
 
 
+def test_format_kurdish_ckb_variant_standard_uses_xezelwer() -> None:
+    kd = KurdishDate.from_gregorian(date(2018, 11, 10))
+    s = format_calendar_date(
+        kd,
+        "%B",
+        calendar=CalendarKind.KURDISH,
+        locale="ckb",
+        kurdish_variant="standard",
+    )
+    assert "خەزەڵوەر" in s
+
+
+def test_format_kurdish_kmr_variant_switches_month_name() -> None:
+    kd = KurdishDate.from_gregorian(date(2018, 11, 10))
+    standard = format_calendar_date(
+        kd,
+        "%B",
+        calendar=CalendarKind.KURDISH,
+        locale="kmr",
+        kurdish_variant="standard",
+    )
+    gelarezan = format_calendar_date(
+        kd,
+        "%B",
+        calendar=CalendarKind.KURDISH,
+        locale="kmr",
+        kurdish_variant="gelarêzan",
+    )
+    assert standard == "Xezelwer"
+    assert gelarezan == "Gelarêzan"
+
+
+def test_format_kurdish_variant_with_dialect_alias_code() -> None:
+    kd = KurdishDate.from_gregorian(date(2018, 11, 10))
+    s = format_calendar_date(
+        kd,
+        "%B",
+        calendar=CalendarKind.KURDISH,
+        locale="sdh",
+        kurdish_variant="standard",
+    )
+    assert s == "خەزەڵوەر"
+
+
+def test_format_kurdish_wikipedia_variants_for_all_requested_dialects() -> None:
+    kd = KurdishDate.from_gregorian(date(2018, 4, 10))
+    assert (
+        format_calendar_date(
+            kd,
+            "%B",
+            calendar=CalendarKind.KURDISH,
+            locale="sdh",
+            kurdish_variant="sdh_kelhuri",
+        )
+        == "جەشنان"
+    )
+    assert (
+        format_calendar_date(
+            kd,
+            "%B",
+            calendar=CalendarKind.KURDISH,
+            locale="lki",
+            kurdish_variant="lki_laki",
+        )
+        == "پەنجە"
+    )
+    assert (
+        format_calendar_date(
+            kd,
+            "%B",
+            calendar=CalendarKind.KURDISH,
+            locale="hac",
+            kurdish_variant="hac_hawrami",
+        )
+        == "نەوڕۆز"
+    )
+    assert (
+        format_calendar_date(
+            kd,
+            "%B",
+            calendar=CalendarKind.KURDISH,
+            locale="zza",
+            kurdish_variant="zza_zazaki",
+        )
+        == "Nîsanê/Lîzan"
+    )
+    assert (
+        format_calendar_date(
+            kd,
+            "%B",
+            calendar=CalendarKind.KURDISH,
+            locale="kmr",
+            kurdish_variant="kmr_wikipedia",
+        )
+        == "Nîsan"
+    )
+
+
+def test_unknown_kurdish_variant_falls_back_to_locale_default() -> None:
+    kd = KurdishDate.from_gregorian(date(2018, 4, 10))
+    s = format_calendar_date(
+        kd,
+        "%B",
+        calendar=CalendarKind.KURDISH,
+        locale="kmr",
+        kurdish_variant="does_not_exist",
+    )
+    assert s == "Xakelêwe"
+
+
 def test_locale_digits() -> None:
     loc = get_locale(LocaleId.FA)
     out = to_locale_digits("2718", loc)

@@ -21,6 +21,12 @@ uv pip install pyroj
 pip install pyroj
 ```
 
+## Documentation Index
+
+- [Architecture](docs/ARCHITECTURE.md)
+- [Calculation Methods](docs/CALCULATION_METHODS.md)
+- [Locale Reference (full tables and mappings)](docs/LOCALES.md)
+
 ### Basic Creation and Conversions
 ```python
 from datetime import date
@@ -65,7 +71,7 @@ print(kdt_shuffled) # Output: 2726-01-02 03:30:00
 
 Formatting strings out of the box matches Python's `%` standard exactly. Furthermore, `pyroj` natively maps out month and weekday translations depending on your selected locale.
 
-Supported `LocaleId` dialects include `KMR` (Kurmanji / Kurdish-Latin script), `CKB` (Sorani / Kurdish-Arabic script), compatibility alias `KU` (maps to `CKB`), plus `AR` (Arabic), `FA` (Persian), `TR` (Turkish), and `EN` (English).
+Supported `LocaleId` dialects include `KMR` (Kurmanji / Kurdish-Latin script), `CKB` (Sorani / Kurdish-Arabic script), compatibility alias `KU` (maps to `CKB`), plus `AR` (Arabic), `FA` (Persian), `TR` (Turkish), and `EN` (English). Additional ISO aliases are resolved dynamically: `sdh`, `lki`, `hac` -> `CKB`, and `zza` (`diq`/`kiu`) -> `KMR`.
 
 ```python
 from pyroj.kurdish import KurdishDate
@@ -83,7 +89,7 @@ print(kd.strftime("%A, %d %B %Y", locale=LocaleId.CKB))
 
 # Kurmanji execution (Latin-script Kurdish)
 print(kd.strftime("%A, %d %B %Y", locale=LocaleId.KMR))
-# Output: Tuesday, 25 Xakelêw 2726
+# Output: Tuesday, 25 Xakelêwe 2726
 
 # Persian representation
 print(kd.strftime("%A, %d %B %Y", locale=LocaleId.FA))
@@ -103,6 +109,128 @@ String locale negotiation is also supported dynamically:
 print(kd.strftime("%B %Y", locale="kmr"))      # Kurmanji
 print(kd.strftime("%B %Y", locale="ckb"))      # Sorani
 print(kd.strftime("%B %Y", locale="ku"))       # Backward-compat alias -> CKB
+```
+
+You can also switch Kurdish month-name variants dynamically:
+
+```python
+from pyroj import CalendarKind, format_calendar_date
+
+print(format_calendar_date(kd, "%B", calendar=CalendarKind.KURDISH, locale="ckb", kurdish_variant="standard"))
+print(format_calendar_date(kd, "%B", calendar=CalendarKind.KURDISH, locale="kmr", kurdish_variant="gelarêzan"))
+```
+
+For months that have multiple accepted names in a dialect table, `pyroj` preserves the canonical combined form from the source (for example, `Nîsanê/Lîzan` or `نیسانە/لیزان`) and returns it as-is when that variant is selected.
+
+### Complete Locale Tables and Detailed Mapping
+
+For full per-dialect markdown tables (canonical names, aliases, month variants, and examples), see:
+
+- [Locale Reference](docs/LOCALES.md)
+
+### Detailed Formatting Examples
+
+```python
+from datetime import date
+from pyroj import CalendarKind, KurdishDate, LocaleId, format_calendar_date
+
+kd = KurdishDate.from_gregorian(date(2026, 3, 24))
+
+# Canonical locale IDs
+print(format_calendar_date(kd, "%A, %d %B %Y", calendar=CalendarKind.KURDISH, locale=LocaleId.CKB))
+print(format_calendar_date(kd, "%A, %d %B %Y", calendar=CalendarKind.KURDISH, locale=LocaleId.KMR))
+
+# ISO-like dynamic aliases
+print(format_calendar_date(kd, "%B %Y", calendar=CalendarKind.KURDISH, locale="sdh"))  # -> CKB
+print(format_calendar_date(kd, "%B %Y", calendar=CalendarKind.KURDISH, locale="lki"))  # -> CKB
+print(format_calendar_date(kd, "%B %Y", calendar=CalendarKind.KURDISH, locale="hac"))  # -> CKB
+print(format_calendar_date(kd, "%B %Y", calendar=CalendarKind.KURDISH, locale="zza"))  # -> KMR
+
+# Variant switching
+print(
+    format_calendar_date(
+        kd,
+        "%B",
+        calendar=CalendarKind.KURDISH,
+        locale="ckb",
+        kurdish_variant="standard",
+    )
+)
+print(
+    format_calendar_date(
+        kd,
+        "%B",
+        calendar=CalendarKind.KURDISH,
+        locale="ckb",
+        kurdish_variant="gelarêzan",
+    )
+)
+```
+
+### All Dialect Variant Examples
+
+```python
+from pyroj import CalendarKind, format_calendar_date
+
+# Kurmanji (Wikipedia month-column set)
+print(format_calendar_date(kd, "%B", calendar=CalendarKind.KURDISH, locale="kmr", kurdish_variant="kmr_wikipedia"))
+
+# Kalhori / Southern Kurdish
+print(format_calendar_date(kd, "%B", calendar=CalendarKind.KURDISH, locale="sdh", kurdish_variant="sdh_kelhuri"))
+
+# Laki
+print(format_calendar_date(kd, "%B", calendar=CalendarKind.KURDISH, locale="lki", kurdish_variant="lki_laki"))
+
+# Hawrami / Gorani
+print(format_calendar_date(kd, "%B", calendar=CalendarKind.KURDISH, locale="hac", kurdish_variant="hac_hawrami"))
+
+# Zazaki
+print(format_calendar_date(kd, "%B", calendar=CalendarKind.KURDISH, locale="zza", kurdish_variant="zza_zazaki"))
+```
+
+### Multiple Names For One Month (Explicit Example)
+
+```python
+from datetime import date
+from pyroj import CalendarKind, KurdishDate, format_calendar_date
+
+kd = KurdishDate.from_gregorian(date(2026, 3, 24))  # Kurdish month index 1
+
+# Zazaki table in KMR family (Latin)
+print(
+    format_calendar_date(
+        kd,
+        "%B",
+        calendar=CalendarKind.KURDISH,
+        locale="zza",
+        kurdish_variant="zza_zazaki",
+    )
+)
+# Output: Nîsanê/Lîzan
+
+# Zazaki table in CKB family (Arabic script)
+print(
+    format_calendar_date(
+        kd,
+        "%B",
+        calendar=CalendarKind.KURDISH,
+        locale="ckb",
+        kurdish_variant="zza_zazaki",
+    )
+)
+# Output: نیسانە/لیزان
+```
+
+### Detailed DateTime Locale Example
+
+```python
+from pyroj import KurdishDateTime
+
+kdt = KurdishDateTime(2726, 1, 4, hour=15, minute=10, second=0)
+
+# Locale-aware AM/PM
+print(kdt.strftime("%Y-%m-%d %I:%M %p", locale="ckb"))
+print(kdt.strftime("%Y-%m-%d %I:%M %p", locale="kmr"))
 ```
 
 ## Historical Eras
