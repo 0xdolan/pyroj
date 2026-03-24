@@ -15,21 +15,20 @@ from pyroj.kurdish import KurdishDate
 from pyroj.locales.catalog import get_locale
 from pyroj.locales.types import CalendarKind, LocaleData, LocaleId
 
-# Longest token first (see _tokenize)
+# Map standard strftime tokens
 _FORMAT_TOKENS: tuple[str, ...] = (
-    "YYYY",
-    "MMMM",
-    "MMM",
-    "MM",
-    "YY",
-    "DD",
-    "dddd",
-    "ddd",
-    "dd",
-    "WW",
-    "M",
-    "D",
-    "d",
+    "%Y",   # YYYY
+    "%B",   # MMMM
+    "%b",   # MMM
+    "%m",   # MM
+    "%y",   # YY
+    "%d",   # DD
+    "%A",   # dddd
+    "%a",   # ddd
+    "%w",   # d (weekday number)
+    "%-w",  # d (no zero padding)
+    "%-m",  # M
+    "%-d",  # D
 )
 
 _MAX_PATTERN_LEN = 512
@@ -93,32 +92,30 @@ class _Render:
         y, m, d = _ymd_for_calendar(self.kd, self.kind)
         cn = self.locale.names(self.kind)
         wi = _weekday_index(self.kd, self.kind)
-        if tok == "YYYY":
+        if tok == "%Y":
             return f"{y:04d}"
-        if tok == "YY":
+        if tok == "%y":
             return f"{y % 100:02d}"
-        if tok == "MMMM":
+        if tok == "%B":
             return cn.months[m - 1]
-        if tok == "MMM":
+        if tok == "%b":
             return cn.months_short[m - 1]
-        if tok == "MM":
+        if tok == "%m":
             return f"{m:02d}"
-        if tok == "M":
+        if tok == "%-m":
             return str(m)
-        if tok == "DD":
+        if tok == "%d":
             return f"{d:02d}"
-        if tok == "D":
+        if tok == "%-d":
             return str(d)
-        if tok == "dddd":
+        if tok == "%A":
             return cn.weekdays[wi]
-        if tok == "ddd":
+        if tok == "%a":
             return cn.weekdays_short[wi]
-        if tok == "dd":
-            return cn.weekdays_min[wi]
-        if tok == "d":
-            return str(self.kd.weekday_persian())
-        if tok == "WW":
+        if tok == "%w":
             return str(wi + 1)
+        if tok == "%-w":
+            return str(self.kd.weekday_persian())
         raise PyrojValueError(f"unknown internal token {tok!r}")
 
 
@@ -131,11 +128,10 @@ def format_calendar_date(
     use_locale_digits: bool = False,
 ) -> str:
     """
-    Format ``kd`` using a **fixed token vocabulary** (no ``eval``, no user ``str.format``).
+    Format ``kd`` using a standard ``strftime`` token vocabulary safely.
 
-    Tokens (longest match wins): ``YYYY``, ``YY``, ``MMMM``, ``MMM``, ``MM``, ``M``,
-    ``DD``, ``D``, ``dddd``, ``ddd``, ``dd`` (weekday min), ``d`` (weekday number 1–7),
-    ``WW`` (weekday index 1–7 in the current calendar’s weekday order).
+    Tokens: ``%Y``, ``%y``, ``%B``, ``%b``, ``%m``, ``%-m``,
+    ``%d``, ``%-d``, ``%A``, ``%a``, ``%w`` (weekday index 1–7), ``%-w`` (weekday number).
 
     All other characters are copied literally.
     """
@@ -166,23 +162,23 @@ def format_iso_date(
     locale: LocaleId = LocaleId.EN,
     use_locale_digits: bool = False,
 ) -> str:
-    """``YYYY-MM-DD`` in the selected calendar’s year/month/day."""
+    """``%Y-%m-%d`` in the selected calendar’s year/month/day."""
     return format_calendar_date(
         kd,
-        "YYYY-MM-DD",
+        "%Y-%m-%d",
         calendar=calendar,
         locale=locale,
         use_locale_digits=use_locale_digits,
     )
 
 
-_SUSPICIOUS = re.compile(r"[{}%]")
+_SUSPICIOUS = re.compile(r"[{}]")
 
 
 def validate_pattern_safe(pattern: str) -> None:
-    """Raise if ``pattern`` contains ``{``, ``}``, or ``%`` (not used by this formatter)."""
+    """Raise if ``pattern`` contains ``{`` or ``}`` (not used by this formatter)."""
     if _SUSPICIOUS.search(pattern):
         raise PyrojValueError(
-            "pattern must not contain '{', '}', or '%'; "
-            "use fixed tokens only (see format_calendar_date docstring)"
+            "pattern must not contain '{' or '}'; "
+            "use fixed % tokens only (see format_calendar_date docstring)"
         )
