@@ -1,7 +1,7 @@
 """
-Julian day conversions aligned with KurdishDate (TypeScript) / Calendrical Calculations.
+Julian day conversions aligned with standard Calendrical Calculations.
 
-Date-only arithmetic uses the same numeric model as ``KurdishDate/src/dateConverter.ts``.
+Date-only arithmetic mathematically matches the absolute epoch methodologies.
 """
 
 from __future__ import annotations
@@ -11,14 +11,14 @@ from datetime import date, datetime, timedelta
 
 from pyroj.exceptions import PyrojRangeError, PyrojValueError
 
-# Epoch constants (same as KurdishDate dateConverter.ts)
+# Epoch constants
 GREGORIAN_EPOCH = 1721425.5
 PERSIAN_EPOCH = 1948320.5
 ISLAMIC_EPOCH = 1948439.5
 MIN_SUPPORTED_YEAR = 1
 MAX_SUPPORTED_YEAR = 9999
 
-# Kurdish solar year = Persian (Jalali) year + 1321 (same as legacy pyroj / Kurdipedia-style)
+# Kurdish solar year = Persian (Jalali) year + 1321
 KURDISH_SOLAR_YEAR_OFFSET = 1321
 
 
@@ -56,7 +56,7 @@ def is_gregorian_leap(year: int) -> bool:
 
 
 def gregorian_to_jdn(year: int, month: int, day: int) -> float:
-    """Gregorian calendar date to Julian day number (same formula as KurdishDate)."""
+    """Gregorian calendar date to Julian day number."""
     year = _require_int("year", year)
     month = _require_int("month", month)
     day = _require_int("day", day)
@@ -126,7 +126,7 @@ def jdn_to_gregorian_datetime(jdn: float) -> datetime:
 
 
 def is_persian_leap_year(year: int) -> bool:
-    """Persian (Jalali) leap year (2820-year cycle), same rule as KurdishDate."""
+    """Persian (Jalali) leap year (2820-year cycle)."""
     year = _require_int("year", year)
     _require_year_bounds("year", year)
     return ((((((year - (474 if year >= 0 else 473)) % 2820) + 474) + 38) * 682) % 2816) < 682
@@ -190,14 +190,14 @@ def jdn_to_persian(jdn: float) -> tuple[int, int, int]:
 
 
 def is_islamic_leap_year(year: int) -> bool:
-    """Tabular Islamic leap year (11-year cycle), KurdishDate / Emacs-style."""
+    """Tabular Islamic leap year (11-year cycle)."""
     year = _require_int("year", year)
     _require_year_bounds("year", year)
     return ((year * 11) + 14) % 30 < 11
 
 
 def islamic_to_jdn(year: int, month: int, day: int) -> float:
-    """Tabular Islamic date to JDN (same closed form as KurdishDate)."""
+    """Tabular Islamic date to JDN."""
     year = _require_int("year", year)
     month = _require_int("month", month)
     day = _require_int("day", day)
@@ -240,28 +240,13 @@ def islamic_days_in_month(year: int, month: int) -> int:
     return 30 if is_islamic_leap_year(year) else 29
 
 
-def js_weekday_from_date(d: date) -> int:
-    """JavaScript ``Date#getDay()`` convention: Sunday=0 .. Saturday=6."""
+def persian_weekday_from_gregorian(d: date) -> int:
+    """
+    1-based weekday compatible with Kurdish calendar for Kurdish/Persian locale conventions.
+    Python weekday(): Monday=0, Sunday=6
+    Persian/Kurdish: Saturday=1, Friday=7
+    mapping: Mon(0)->3, Tue(1)->4, Wed(2)->5, Thu(3)->6, Fri(4)->7, Sat(5)->1, Sun(6)->2
+    """
     if not isinstance(d, date):
         raise PyrojValueError("d must be datetime.date")
-    return (d.weekday() + 1) % 7
-
-
-def gregorian_weekday_to_persian_weekday(js_weekday: int) -> int:
-    """
-    Weekday index 1..7 used by KurdishDate for Persian/Kurdish (Saturday-first ordering
-    in locale tables), derived from JS weekday.
-    """
-    js_weekday = _require_int("js_weekday", js_weekday)
-    if js_weekday < 0 or js_weekday > 6:
-        raise PyrojRangeError("js_weekday must be in 0..6")
-    if js_weekday + 2 == 8:
-        return 1
-    if js_weekday + 2 == 7:
-        return 7
-    return js_weekday + 2
-
-
-def persian_weekday_from_gregorian(d: date) -> int:
-    """1-based weekday compatible with KurdishDate ``day()`` for Kurdish/Persian calendar."""
-    return gregorian_weekday_to_persian_weekday(js_weekday_from_date(d))
+    return (d.weekday() + 2) % 7 + 1

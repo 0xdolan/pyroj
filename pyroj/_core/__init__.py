@@ -3,7 +3,6 @@
 from pyroj._core.convert import (
     gregorian_datetime_to_jdn,
     gregorian_to_jdn,
-    gregorian_weekday_to_persian_weekday,
     is_gregorian_leap,
     is_islamic_leap_year,
     is_persian_leap_year,
@@ -19,7 +18,6 @@ from pyroj._core.convert import (
 __all__ = [
     "gregorian_datetime_to_jdn",
     "gregorian_to_jdn",
-    "gregorian_weekday_to_persian_weekday",
     "is_gregorian_leap",
     "is_persian_leap_year",
     "is_islamic_leap_year",
