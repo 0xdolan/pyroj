@@ -6,6 +6,7 @@ on:
     tags: ["v*"]
   pull_request:
     branches: [main, develop]
+  workflow_dispatch:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -22,11 +23,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
-      - name: Install uv
-        uses: astral-sh/setup-uv@v6
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          enable-cache: true
           python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install uv
+        run: python -m pip install --upgrade pip uv
 
       - name: Create virtual environment
         run: uv venv
@@ -51,25 +55,36 @@ jobs:
     environment: pypi
     permissions:
       id-token: write
-      contents: read
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+
       - name: Install uv
-        uses: astral-sh/setup-uv@v6
+        run: python -m pip install --upgrade pip uv
 
       - name: Create virtual environment
         run: uv venv
 
-      - name: Build and Publish
+      - name: Build package
         run: |
           uv build
-          uv publish
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          tag_name: ${{ github.ref_name }}
+          packages-dir: dist/
+
+      - name: Create or update GitHub release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release view "${{ github.ref_name }}" >/dev/null 2>&1 \
+            && gh release edit "${{ github.ref_name }}" --latest \
+            || gh release create "${{ github.ref_name }}" --latest --generate-notes
