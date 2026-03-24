@@ -17,11 +17,11 @@ from pyroj.kurdish import (
 from pyroj.locales import CalendarKind, LocaleData, LocaleId, get_locale
 
 __title__ = "pyroj"
-__url__ = "https://github.com/dolanskurd/pyroj"
+__url__ = "https://github.com/0xdolan/pyroj"
 __version__ = "1.2.1"
 __build__ = __version__
 __author__ = "Dolan Hêriş"
-__license__ = "MIT"
+__license__ = "AGPL-3.0-only"
 
 __all__ = [
     "CalendarKind",
