@@ -32,119 +32,117 @@ This is the complete locale and dialect reference for `pyroj`.
 Pass these keys to `kurdish_variant=` when formatting Kurdish calendar names:
 
 - `standard`
-- `gelarêzan` (or `gelarezan`)
-- `kmr_wikipedia`
 - `sdh_kelhuri`
 - `lki_laki`
 - `hac_hawrami`
 - `zza_zazaki`
+- `syriac`
 
 ## Month Tables (Source-Aligned)
 
-Baseline for regional forms is the Kurdish month table from CKB Wikipedia:
-[مانگە کوردییەکان - ویکیپیدیا](https://ckb.wikipedia.org/wiki/%D9%85%D8%A7%D9%86%DA%AF%DB%95_%DA%A9%D9%88%D8%B1%D8%AF%DB%8C%DB%8C%DB%95%DA%A9%D8%A7%D9%86)
+Baseline for regional forms is the unified Kurdish month table. Note that some months have multiple valid names. When formatting, `pyroj` defaults to the first name listed, but developers can access alternatives natively via `get_locale(LocaleId.CKB).names(CalendarKind.KURDISH).months`.
 
-### `ckb` Sorani
+### 'standard'
 
-| # | `standard` | `gelarêzan` |
+| # | CKB Names | KMR Names |
 | --- | --- | --- |
-| 1 | خاکەلێوە | خاکەلێوە |
-| 2 | گوڵان | گوڵان |
-| 3 | جۆزەردان | جۆزەردان |
-| 4 | پووشپەڕ | پووشپەڕ |
-| 5 | گەلاوێژ | گەلاوێژ |
-| 6 | خەرمانان | خەرمانان |
-| 7 | ڕەزبەر | ڕەزبەر |
-| 8 | خەزەڵوەر | گەڵاڕێزان |
-| 9 | سەرماوەز | سەرماوەز |
-| 10 | بەفرانبار | بەفرانبار |
-| 11 | ڕێبەندان | ڕێبەندان |
-| 12 | ڕەشەمە | ڕەشەمێ |
+| 1 | خاکه‌لێوه, نەورۆز, ھەرمێ پشکوان | Nîsan, Newroz, Herme Pişkewan |
+| 2 | گوڵان | Gulan |
+| 3 | جۆزه‌ردان | Hezîran |
+| 4 | پوشپه‌ر | Tîrmeh |
+| 5 | گه‌لاوێژ | Gelawêj |
+| 6 | خه‌رمانان | Îlon |
+| 7 | ره‌زبه‌ر | Rezber |
+| 8 | گه‌ڵارێزان | Gellarêzan |
+| 9 | سه‌رماوه‌ز | Sermawez |
+| 10 | به‌فرانبار | Befranbar |
+| 11 | رێبه‌ندان | Rêbendan |
+| 12 | ره‌شه‌مێ | Reşemê |
 
-### `kmr` Kurmanji
+### 'sdh_kelhuri'
 
-| # | `standard` | `gelarêzan` | `kmr_wikipedia` |
-| --- | --- | --- | --- |
-| 1 | Xakelêwe | Xakelêwe | Nîsan |
-| 2 | Gulan | Gulan | Gulan |
-| 3 | Cozerdan | Cozerdan | Hezîran |
-| 4 | Pûşper | Pûşper | Tîrmeh |
-| 5 | Gelawêj | Gelawêj | Îlon |
-| 6 | Xermanan | Xermanan | Tebax |
-| 7 | Rezber | Rezber | Cotmeh |
-| 8 | Xezelwer | Gelarêzan | Mijdar |
-| 9 | Sermawez | Sermawez | Kanûn |
-| 10 | Befranbar | Befranbar | Çile |
-| 11 | Rêbendan | Rêbendan | Sibat |
-| 12 | Reşemê | Reşemê | Adar |
+| # | CKB Names | KMR Names |
+| --- | --- | --- |
+| 1 | جەژنان | Cejnan |
+| 2 | گوڵان | Gulan |
+| 3 | زەردان | Zerdan |
+| 4 | پەرپەر | Perper |
+| 5 | گه‌لاویژ | Gelawêj |
+| 6 | نوخشان | Noxşan |
+| 7 | بەران | Beran |
+| 8 | خەزان | Xezan |
+| 9 | ساران | Saran |
+| 10 | بەفران | Befran |
+| 11 | بەندان | Bendan |
+| 12 | رەمشان | Remşan |
 
-### `sdh` Kalhori (`sdh_kelhuri`)
+### 'lki_laki'
 
-| # | Month |
-| --- | --- |
-| 1 | جەشنان |
-| 2 | گوڵان |
-| 3 | زەردان |
-| 4 | پەرپەر |
-| 5 | نوخشان |
-| 6 | گەلاوێژ |
-| 7 | بەران |
-| 8 | خەزان |
-| 9 | ساران |
-| 10 | بەفران |
-| 11 | بەندان |
-| 12 | رەمشان |
+| # | CKB Names | KMR Names |
+| --- | --- | --- |
+| 1 | پەنجە | Pence |
+| 2 | میریان | Miryan |
+| 3 | گاکووڕ | Gakûr |
+| 4 | ئاگرانی | Agranî |
+| 5 | مردار | Mirdar |
+| 6 | ماڵەژێر | Malajêr |
+| 7 | ماڵەژێر دوماینە | Malajêr 2 |
+| 8 | تۊلتەکن | Tultek |
+| 9 | مانگ سیە | Mang Sî |
+| 10 | نۆڕووژ | Norûj |
+| 11 | خاکەلیە | Xakelî |
+| 12 | مانگ لیە | Mang Lî |
 
-### `lki` Laki (`lki_laki`)
+### 'hac_hawrami'
 
-| # | Month |
-| --- | --- |
-| 1 | پەنجە |
-| 2 | میریان |
-| 3 | گاکووڕ |
-| 4 | ئاگرانی |
-| 5 | ماڵەژێر |
-| 6 | مردار |
-| 7 | ماڵەژێر دوماینە |
-| 8 | تۊلتەکن |
-| 9 | مانگ سیە |
-| 10 | نۆڕووژ |
-| 11 | خاکەلیە |
-| 12 | مانگ لیە |
+| # | CKB Names | KMR Names |
+| --- | --- | --- |
+| 1 | نەوڕۆز | Newroz |
+| 2 | پاژەرەژ | Pajerej |
+| 3 | چێڵکڕ | Çêlkr |
+| 4 | کۆپڕ | Kopr |
+| 5 | گه‌لاوێژ | Gelawêj |
+| 6 | ئاوەوەرە | Awewere |
+| 7 | ترازیێ | Terazî |
+| 8 | گه‌ڵاخەزان | Gelaxezan |
+| 9 | کەڵەھەرز | Keleherz |
+| 10 | ئارگا | Arga |
+| 11 | رابڕان | Rabran |
+| 12 | سیاوکام | Siyawkam |
 
-### `hac` Hawrami (`hac_hawrami`)
+### 'zza_zazaki'
 
-| # | Month |
-| --- | --- |
-| 1 | نەوڕۆز |
-| 2 | پاژەرەژ |
-| 3 | چێڵکڕ |
-| 4 | کۆپڕ |
-| 5 | ئاوەوەرە |
-| 6 | گەلاوێژ |
-| 7 | ترازیێ |
-| 8 | گەڵاخەزان |
-| 9 | کەڵەھەرز |
-| 10 | ئارگا |
-| 11 | رابڕان |
-| 12 | سیاوکام |
+| # | CKB Names | KMR Names |
+| --- | --- | --- |
+| 1 | نیسانە | Nîsan |
+| 2 | گولانە | Gulan |
+| 3 | ھەزیرانە, ڤارتڤارە, ئامنانو ڤەرێن, ئامنانیا ڤەرێنە | Hezîran, Vartvar, Amano Verên, Amaniya Verêne |
+| 4 | تەممووزە | Temmuz |
+| 5 | تەباخە, ئامنانو پەیێن, ئامنانیا پەیێنە, ئاگوستە | Tebax, Amano Peyên, Amaniya Peyêne, Awuste |
+| 6 | کەشکەلون, جتمەنگی, ئێلولە, ئەلون, ئیلۆنە, پاییزو ڤەرێن, پاییزیا ڤەرێنە | Keshkelon, Ctemengi, Îlule, Elon, Îlonê, Payîzo Verên, Payîzya Verêne |
+| 7 | تشرینو ڤەرێن, پاییزە, پاییزو وەرتێن, پاییزیا وەرتێنە | Tişrino Verên, Payîza, Payîzo Werten, Payîzya Wertenê |
+| 8 | تشرینو پەیێن, بارانڤەردانە, گاڤارە, کەلڤەردانە, ناخلقرانە, پاییزو پەیێن, پاییزیا پەیێنە | Tişrino Peyên, Baranverdene, Gavare, Kelverde, Naxelqerane, Payîzo Peyên, Payîzya Peyêne |
+| 9 | تشرینو پەیێن, بارانڤەردانە, گاڤارە, کەلڤەردانە, ناخلقرانە, پاییزو پەیێن, پاییزیا پەیێنە | Tişrino Peyên, Baranverdene, Gavare, Kelverde, Naxelqerane, Payîzo Peyên, Payîzya Peyêne |
+| 10 | چلە, چلە, چەلییە, چەلەیو پل, چلەی وەرتی, زەمپەریە, زقناوتە, زقناووتە | Çile, Çile, Çêliye, Çileyo Pel, Çiley Werti, Zemperî, Zqnewte, Zqnewte |
+| 11 | سباتە, گوجگە, گوژگە, چەڵەیو پەیێن, چلەیو پەیێن | Sibat, Gujge, Gujge, Çileyo Peyên, Çileyo Peyên |
+| 12 | ئادار, ئادارە, ئاودار, مارتە | Adar, Adare, Audar, Marte |
 
-### `zza` Zazaki (`zza_zazaki`)
+### 'syriac'
 
-| # | Month |
-| --- | --- |
-| 1 | نیسانە/لیزان |
-| 2 | گولانە |
-| 3 | ھەزیرانە/ڤارتڤارە/ئامنانو ڤەرێن/ئامنانیا ڤەرێنە |
-| 4 | تەممووزە/مەنگا پالی/تەخترما/تیرمەنگ |
-| 5 | کەشکەلون/جتمەنگی/ئێلولە/ئەلون/ئیلۆنە/پاییزو ڤەرێن/پاییزیا ڤەرێنە |
-| 6 | تەباخە/ئامنانو پەیێن/ئامنانیا پەیێنە/ئاگوستە |
-| 7 | تشرینو ڤەرێن/پاییزە/پاییزو وەرتێن/پاییزیا وەرتێنە |
-| 8 | تشرینو پەیێن/بارانڤەردانە/گاڤارە/کەلڤەردانە/ناخلقرانە/پاییزو پەیێن/پاییزیا پەیێنە |
-| 9 | کانون/گاغان/تاڤارە/چلەیو ڤەرێن/چلەیو قج |
-| 10 | چەلە/چلە/چەلییە/چەلەیو پل/چلەی وەرتی/زەمپەریە/زقناوتە/زقناووتە |
-| 11 | سباتە/گوجگە/گوژگە/چەلەیو پەیێن/چلەیو پەیێن |
-| 12 | ئادار/ئادارە/ئاودار/مارتە |
+| # | CKB Names | KMR Names |
+| --- | --- | --- |
+| 1 | کانوونی دووه‌م | Kanûnê Duyem |
+| 2 | شوبات | Şubat |
+| 3 | ئازار | Adar |
+| 4 | نیسان | Nîsan |
+| 5 | ئایار | Gulan |
+| 6 | حوزەیران | Hezîran |
+| 7 | تەممووز | Tîrmeh |
+| 8 | ئاب | Tebax |
+| 9 | کانون | Kanûn |
+| 10 | تشرینی یەکەم | Tişrîn 1 |
+| 11 | تشرینی دووه‌م | Tişrîn 2 |
+| 12 | کانوونی یەکەم | Kanûnê Yekem |
 
 ## Usage Examples
 
@@ -159,7 +157,7 @@ print(format_calendar_date(kd, "%B", calendar=CalendarKind.KURDISH, locale="ckb"
 print(format_calendar_date(kd, "%B", calendar=CalendarKind.KURDISH, locale="kmr"))
 
 # Variant selection
-print(format_calendar_date(kd, "%B", calendar=CalendarKind.KURDISH, locale="kmr", kurdish_variant="kmr_wikipedia"))
+print(format_calendar_date(kd, "%B", calendar=CalendarKind.KURDISH, locale="kmr", kurdish_variant="syriac"))
 print(format_calendar_date(kd, "%B", calendar=CalendarKind.KURDISH, locale="sdh", kurdish_variant="sdh_kelhuri"))
 print(format_calendar_date(kd, "%B", calendar=CalendarKind.KURDISH, locale="lki", kurdish_variant="lki_laki"))
 print(format_calendar_date(kd, "%B", calendar=CalendarKind.KURDISH, locale="hac", kurdish_variant="hac_hawrami"))

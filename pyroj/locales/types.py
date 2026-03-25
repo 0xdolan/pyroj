@@ -31,11 +31,11 @@ class CalendarKind(Enum):
 class CalendarNames:
     """Twelve months and seven weekdays (weekday order: Saturday-first, matching KurdishDate)."""
 
-    months: tuple[str, ...]
-    months_short: tuple[str, ...]
-    weekdays: tuple[str, ...]
-    weekdays_short: tuple[str, ...]
-    weekdays_min: tuple[str, ...]
+    months: tuple[tuple[str, ...], ...]
+    months_short: tuple[tuple[str, ...], ...]
+    weekdays: tuple[tuple[str, ...], ...]
+    weekdays_short: tuple[tuple[str, ...], ...]
+    weekdays_min: tuple[tuple[str, ...], ...]
 
     def __post_init__(self) -> None:
         if len(self.months) != 12 or len(self.months_short) != 12:

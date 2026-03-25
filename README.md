@@ -172,8 +172,8 @@ print(
 ```python
 from pyroj import CalendarKind, format_calendar_date
 
-# Kurmanji (Wikipedia month-column set)
-print(format_calendar_date(kd, "%B", calendar=CalendarKind.KURDISH, locale="kmr", kurdish_variant="kmr_wikipedia"))
+# Syriac (KMR)
+print(format_calendar_date(kd, "%B", calendar=CalendarKind.KURDISH, locale="kmr", kurdish_variant="syriac"))
 
 # Kalhori / Southern Kurdish
 print(format_calendar_date(kd, "%B", calendar=CalendarKind.KURDISH, locale="sdh", kurdish_variant="sdh_kelhuri"))
@@ -219,6 +219,15 @@ print(
     )
 )
 # Output: نیسانە/لیزان
+
+# Fetching all alternative valid names natively from the Locale cache
+from pyroj.locales import get_locale, LocaleId, CalendarKind
+loc = get_locale(LocaleId.KMR)
+zazaki_months = loc.names(CalendarKind.KURDISH).months
+
+# The third Zazaki month (index 2) has multiple alternative names
+print(zazaki_months[2])
+# Output: ('Hezîran', 'Vartvar', 'Amano Verên', 'Amaniya Verêne')
 ```
 
 ### Detailed DateTime Locale Example

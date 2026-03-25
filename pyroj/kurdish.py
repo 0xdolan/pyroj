@@ -30,6 +30,7 @@ from pyroj.locales import LocaleId
 _TDate = TypeVar("_TDate", bound="KurdishDate")
 _TDateTime = TypeVar("_TDateTime", bound="KurdishDateTime")
 
+
 def _require_int(name: str, value: object) -> int:
     if isinstance(value, bool) or not isinstance(value, int):
         raise PyrojValueError(f"{name} must be int (bool is not allowed)")
@@ -46,6 +47,7 @@ def _require_year(year: int) -> int:
 
 class KurdishEra(Enum):
     """How Kurdish ``year`` is counted."""
+
     #: Kurdish year = Jalali year + 1321 (Median Empire Epoch, 700 BC)
     SOLAR_PERSIAN_OFFSET = auto()
     #: Kurdish year = Jalali year + 1233 (Fall of Nineveh Epoch, 612 BC)
@@ -71,7 +73,7 @@ class KurdishDate(date):
     Kurdish solar date: same month lengths as the Persian (Jalali) calendar.
     Inherits from `datetime.date`, so it can be used anywhere a standard Python date is expected.
     """
-    
+
     _era: KurdishEra = KurdishEra.SOLAR_PERSIAN_OFFSET
 
     def __new__(cls: type[_TDate], *args: Any, **kwargs: Any) -> _TDate:
@@ -93,24 +95,22 @@ class KurdishDate(date):
                 raise TypeError("KurdishDate takes exactly 3 arguments (year, month, day)")
 
         era = kwargs.get("era", KurdishEra.SOLAR_PERSIAN_OFFSET)
-        
+
         _require_year(_require_int("year", year))
         _require_int("month", month)
         _require_int("day", day)
 
         if month < 1 or month > 12:
             raise PyrojRangeError(f"month must be 1..12, got {month}")
-        
+
         py = era.to_persian_year(year)
         dim = persian_days_in_month(py, month)
         if day < 1 or day > dim:
-            raise PyrojRangeError(
-                f"day {day} out of range for Kurdish month {month} (max {dim})"
-            )
-        
+            raise PyrojRangeError(f"day {day} out of range for Kurdish month {month} (max {dim})")
+
         jdn = persian_to_jdn(py, month, day)
         gy, gm, gd = jdn_to_gregorian(jdn)
-        
+
         obj = super().__new__(cls, gy, gm, gd)
         obj._era = era
         return obj
@@ -221,7 +221,7 @@ class KurdishDate(date):
         **kwargs: Any,
     ) -> _TDate:
         """Return a new :class:`KurdishDate` with replaced fields.
-        
+
         Similar to :meth:`datetime.date.replace`.
         """
         return self.__class__(
@@ -241,6 +241,7 @@ class KurdishDate(date):
         if not format_spec:
             return str(self)
         from pyroj.formatting import format_calendar_date
+
         return format_calendar_date(self, format_spec)
 
     def timetuple(self) -> Any:
@@ -293,38 +294,43 @@ class KurdishDateTime(datetime):
         tzinfo: tzinfo | None = None,
         *,
         fold: int = 0,
-        **kwargs: Any
+        **kwargs: Any,
     ) -> _TDateTime:
         if "_gregorian_datetime" in kwargs:
             g_dt = kwargs.pop("_gregorian_datetime")
             era = kwargs.pop("era", KurdishEra.SOLAR_PERSIAN_OFFSET)
             obj = super().__new__(
-                cls, g_dt.year, g_dt.month, g_dt.day,
-                g_dt.hour, g_dt.minute, g_dt.second, g_dt.microsecond,
-                tzinfo=g_dt.tzinfo, fold=g_dt.fold
+                cls,
+                g_dt.year,
+                g_dt.month,
+                g_dt.day,
+                g_dt.hour,
+                g_dt.minute,
+                g_dt.second,
+                g_dt.microsecond,
+                tzinfo=g_dt.tzinfo,
+                fold=g_dt.fold,
             )
             obj._era = era
             return obj
-            
+
         if year is None or month is None or day is None:
             raise TypeError("KurdishDateTime requires year, month, and day")
-            
+
         era = kwargs.get("era", KurdishEra.SOLAR_PERSIAN_OFFSET)
-        
+
         _require_year(_require_int("year", year))
         _require_int("month", month)
         _require_int("day", day)
 
         if month < 1 or month > 12:
             raise PyrojRangeError(f"month must be 1..12, got {month}")
-            
+
         py = era.to_persian_year(year)
         dim = persian_days_in_month(py, month)
         if day < 1 or day > dim:
-            raise PyrojRangeError(
-                f"day {day} out of range for Kurdish month {month} (max {dim})"
-            )
-        
+            raise PyrojRangeError(f"day {day} out of range for Kurdish month {month} (max {dim})")
+
         jdn = persian_to_jdn(py, month, day)
         gy, gm, gd = jdn_to_gregorian(jdn)
 
@@ -377,15 +383,26 @@ class KurdishDateTime(datetime):
             super().year,
             super().month,
             super().day,
-            self.hour, self.minute, self.second, self.microsecond, self.tzinfo, fold=self.fold
+            self.hour,
+            self.minute,
+            self.second,
+            self.microsecond,
+            self.tzinfo,
+            fold=self.fold,
         )
 
     def replace(  # type: ignore[override]
-        self: _TDateTime, 
-        year: int | None = None, month: int | None = None, day: int | None = None,
-        hour: int | None = None, minute: int | None = None, second: int | None = None,
-        microsecond: int | None = None, tzinfo: tzinfo | Any = True,
-        *args: Any, **kwargs: Any
+        self: _TDateTime,
+        year: int | None = None,
+        month: int | None = None,
+        day: int | None = None,
+        hour: int | None = None,
+        minute: int | None = None,
+        second: int | None = None,
+        microsecond: int | None = None,
+        tzinfo: tzinfo | Any = True,
+        *args: Any,
+        **kwargs: Any,
     ) -> _TDateTime:
         tz = self.tzinfo if tzinfo is True else tzinfo
         return self.__class__(
@@ -398,7 +415,7 @@ class KurdishDateTime(datetime):
             microsecond if microsecond is not None else self.microsecond,
             tzinfo=tz,
             fold=kwargs.get("fold", self.fold),
-            era=kwargs.get("era", self.era)
+            era=kwargs.get("era", self.era),
         )
 
     def __add__(self, other: Any) -> KurdishDateTime:
@@ -419,7 +436,7 @@ class KurdishDateTime(datetime):
                 return self.to_gregorian() - other.to_gregorian()
             return self.to_gregorian() - other
         return NotImplemented
-        
+
     def date(self) -> KurdishDate:
         return KurdishDate(self.year, self.month, self.day, era=self.era)
 
@@ -431,14 +448,15 @@ class KurdishDateTime(datetime):
         loc = get_locale_resolved(locale_id)
 
         # Replace time tokens manually, then dispatch date tokens to formatting
-        date_pattern = format.replace('%H', f"{self.hour:02d}")
-        date_pattern = date_pattern.replace('%I', f"{(self.hour % 12) or 12:02d}")
-        date_pattern = date_pattern.replace('%M', f"{self.minute:02d}")
-        date_pattern = date_pattern.replace('%S', f"{self.second:02d}")
-        date_pattern = date_pattern.replace('%f', f"{self.microsecond:06d}")
-        date_pattern = date_pattern.replace('%p', loc.am_pm[0] if self.hour < 12 else loc.am_pm[1])
+        date_pattern = format.replace("%H", f"{self.hour:02d}")
+        date_pattern = date_pattern.replace("%I", f"{(self.hour % 12) or 12:02d}")
+        date_pattern = date_pattern.replace("%M", f"{self.minute:02d}")
+        date_pattern = date_pattern.replace("%S", f"{self.second:02d}")
+        date_pattern = date_pattern.replace("%f", f"{self.microsecond:06d}")
+        date_pattern = date_pattern.replace("%p", loc.am_pm[0] if self.hour < 12 else loc.am_pm[1])
 
         from pyroj.formatting import format_calendar_date
+
         return format_calendar_date(self.date(), date_pattern, locale=locale_id)
 
     def __format__(self, format_spec: str) -> str:
