@@ -50,7 +50,7 @@ def test_hash() -> None:
 
 def test_kurdish_rejects_bool_and_year_bounds() -> None:
     with pytest.raises(PyrojValueError):
-        KurdishDate.from_kurdish_solar(2718, True, 21)  # type: ignore[arg-type]
+        KurdishDate.from_kurdish_solar(2718, True, 21)
     with pytest.raises(PyrojRangeError):
         KurdishDate.from_kurdish_solar(10000, 1, 1)
 

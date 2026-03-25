@@ -17,15 +17,15 @@ from pyroj.locales.types import CalendarKind, LocaleData, LocaleId
 
 # Map standard strftime tokens
 _FORMAT_TOKENS: tuple[str, ...] = (
-    "%Y",   # YYYY
-    "%B",   # MMMM
-    "%b",   # MMM
-    "%m",   # MM
-    "%y",   # YY
-    "%d",   # DD
-    "%A",   # dddd
-    "%a",   # ddd
-    "%w",   # d (weekday number)
+    "%Y",  # YYYY
+    "%B",  # MMMM
+    "%b",  # MMM
+    "%m",  # MM
+    "%y",  # YY
+    "%d",  # DD
+    "%A",  # dddd
+    "%a",  # ddd
+    "%w",  # d (weekday number)
     "%-w",  # d (no zero padding)
     "%-m",  # M
     "%-d",  # D
@@ -97,9 +97,9 @@ class _Render:
         if tok == "%y":
             return f"{y % 100:02d}"
         if tok == "%B":
-            return cn.months[m - 1]
+            return cn.months[m - 1][0]
         if tok == "%b":
-            return cn.months_short[m - 1]
+            return cn.months_short[m - 1][0]
         if tok == "%m":
             return f"{m:02d}"
         if tok == "%-m":
@@ -109,9 +109,9 @@ class _Render:
         if tok == "%-d":
             return str(d)
         if tok == "%A":
-            return cn.weekdays[wi]
+            return cn.weekdays[wi][0]
         if tok == "%a":
-            return cn.weekdays_short[wi]
+            return cn.weekdays_short[wi][0]
         if tok == "%w":
             return str(wi + 1)
         if tok == "%-w":

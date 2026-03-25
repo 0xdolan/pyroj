@@ -47,7 +47,7 @@ def test_islamic_round_trip() -> None:
 
 def test_convert_rejects_bool_and_ranges() -> None:
     with pytest.raises(PyrojValueError):
-        gregorian_to_jdn(True, 1, 1)  # type: ignore[arg-type]
+        gregorian_to_jdn(True, 1, 1)
     with pytest.raises(PyrojRangeError):
         gregorian_to_jdn(2018, 13, 1)
     with pytest.raises(PyrojRangeError):

@@ -53,7 +53,7 @@ def test_format_kurdish_kmr_locale_month() -> None:
         calendar=CalendarKind.KURDISH,
         locale=LocaleId.KMR,
     )
-    assert "Xakel" in s
+    assert "Nîsan" in s
 
 
 def test_format_kurdish_ckb_locale_month_from_code() -> None:
@@ -76,7 +76,7 @@ def test_format_kurdish_ckb_variant_standard_uses_xezelwer() -> None:
         locale="ckb",
         kurdish_variant="standard",
     )
-    assert "خەزەڵوەر" in s
+    assert "گه‌ڵارێزان" in s
 
 
 def test_format_kurdish_kmr_variant_switches_month_name() -> None:
@@ -88,15 +88,15 @@ def test_format_kurdish_kmr_variant_switches_month_name() -> None:
         locale="kmr",
         kurdish_variant="standard",
     )
-    gelarezan = format_calendar_date(
+    syriac = format_calendar_date(
         kd,
         "%B",
         calendar=CalendarKind.KURDISH,
         locale="kmr",
-        kurdish_variant="gelarêzan",
+        kurdish_variant="syriac",
     )
-    assert standard == "Xezelwer"
-    assert gelarezan == "Gelarêzan"
+    assert standard == "Gellarêzan"
+    assert syriac == "Tebax"
 
 
 def test_format_kurdish_variant_with_dialect_alias_code() -> None:
@@ -108,7 +108,7 @@ def test_format_kurdish_variant_with_dialect_alias_code() -> None:
         locale="sdh",
         kurdish_variant="standard",
     )
-    assert s == "خەزەڵوەر"
+    assert s == "گه‌ڵارێزان"
 
 
 def test_format_kurdish_wikipedia_variants_for_all_requested_dialects() -> None:
@@ -121,7 +121,7 @@ def test_format_kurdish_wikipedia_variants_for_all_requested_dialects() -> None:
             locale="sdh",
             kurdish_variant="sdh_kelhuri",
         )
-        == "جەشنان"
+        == "جەژنان"
     )
     assert (
         format_calendar_date(
@@ -151,7 +151,7 @@ def test_format_kurdish_wikipedia_variants_for_all_requested_dialects() -> None:
             locale="zza",
             kurdish_variant="zza_zazaki",
         )
-        == "Nîsanê/Lîzan"
+        == "Nîsan"
     )
     assert (
         format_calendar_date(
@@ -159,9 +159,9 @@ def test_format_kurdish_wikipedia_variants_for_all_requested_dialects() -> None:
             "%B",
             calendar=CalendarKind.KURDISH,
             locale="kmr",
-            kurdish_variant="kmr_wikipedia",
+            kurdish_variant="syriac",
         )
-        == "Nîsan"
+        == "Kanûnê Duyem"
     )
 
 
@@ -174,7 +174,7 @@ def test_unknown_kurdish_variant_falls_back_to_locale_default() -> None:
         locale="kmr",
         kurdish_variant="does_not_exist",
     )
-    assert s == "Xakelêwe"
+    assert s == "Nîsan"
 
 
 def test_locale_digits() -> None:
