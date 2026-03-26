@@ -10,6 +10,7 @@ alwaysApply: true
 - **NEVER** push or commit directly to the `main` branch. 
 - **Always** create an appropriately named semantic branch (e.g., `feature/xyz`, `fix/xyz`) off of explicitly the `develop` branch.
 - **Merge Progression**: `feature/*` -> `develop` -> `main`. 
+- **CRITICAL**: Always ask for the human developer's explicit approval before attempting to merge anything into the `main` branch. *Do not merge to main automatically.*
 - Semantic version tags (e.g., `v1.3.1`) should be applied directly onto `main` upon release triggers.
 
 ## 2. The Documentation-Sync Mandate
