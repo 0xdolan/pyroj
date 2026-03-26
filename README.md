@@ -128,46 +128,49 @@ For full per-dialect markdown tables (canonical names, aliases, month variants, 
 
 - [Locale Reference](docs/LOCALES.md)
 
-### Detailed Formatting Examples
+### Sorani and Kurmanci (Detailed Formatting)
+
+Kurdish Sorani (`ckb`) uses the Arabic script, and Kurmanci (`kmr`) uses the Latin script. The default month names for the first month (starting in March) are "خاکه‌لێوه" (Xakelêwe) and "Nîsan", but **"نەورۆز" (Newroz)** is widely used as a second alternative!
 
 ```python
 from datetime import date
-from pyroj import CalendarKind, KurdishDate, LocaleId, format_calendar_date
+from pyroj import CalendarKind, KurdishDate, LocaleId, format_calendar_date, get_locale
 
-kd = KurdishDate.from_gregorian(date(2026, 3, 24))
+# March 22nd is Kurdish Month 1, Day 2
+kd = KurdishDate.from_gregorian(date(2026, 3, 22)) 
 
-# Canonical locale IDs
+# Full Month (%B) and Full Weekday (%A) in Sorani (CKB)
 print(format_calendar_date(kd, "%A, %d %B %Y", calendar=CalendarKind.KURDISH, locale=LocaleId.CKB))
+# Output: یەکشەممە, 02 خاکه‌لێوه 2726
+
+# Full Month (%B) and Full Weekday (%A) in Kurmanci (KMR)
 print(format_calendar_date(kd, "%A, %d %B %Y", calendar=CalendarKind.KURDISH, locale=LocaleId.KMR))
+# Output: Yekşem, 02 Nîsan 2726
 
-# ISO-like dynamic aliases
-print(format_calendar_date(kd, "%B %Y", calendar=CalendarKind.KURDISH, locale="sdh"))  # -> CKB
-print(format_calendar_date(kd, "%B %Y", calendar=CalendarKind.KURDISH, locale="lki"))  # -> CKB
-print(format_calendar_date(kd, "%B %Y", calendar=CalendarKind.KURDISH, locale="hac"))  # -> CKB
-print(format_calendar_date(kd, "%B %Y", calendar=CalendarKind.KURDISH, locale="zza"))  # -> KMR
+# Short Weekday (%a) and Short Month (%b) in Sorani
+print(format_calendar_date(kd, "%a, %d %b %Y", calendar=CalendarKind.KURDISH, locale=LocaleId.CKB))
+# Output: یەک, 02 خاک 2726
 
-# Variant switching
-print(
-    format_calendar_date(
-        kd,
-        "%B",
-        calendar=CalendarKind.KURDISH,
-        locale="ckb",
-        kurdish_variant="standard",
-    )
-)
-print(
-    format_calendar_date(
-        kd,
-        "%B",
-        calendar=CalendarKind.KURDISH,
-        locale="ckb",
-        kurdish_variant="gelarêzan",
-    )
-)
+# Short Weekday (%a) and Short Month (%b) in Kurmanci
+print(format_calendar_date(kd, "%a, %d %b %Y", calendar=CalendarKind.KURDISH, locale=LocaleId.KMR))
+# Output: Yek, 02 Nîs 2726
+
+# Accessing the first vs second name options for March (Month 1) directly from the locale cache
+ckb_months = get_locale(LocaleId.CKB).names(CalendarKind.KURDISH).months
+kmr_months = get_locale(LocaleId.KMR).names(CalendarKind.KURDISH).months
+
+# Default First Name (Index 0)
+print(ckb_months[0][0])  # Output: خاکه‌لێوه
+print(kmr_months[0][0])  # Output: Nîsan
+
+# Alternative Second Name (Index 1) - Newroz
+print(ckb_months[0][1])  # Output: نەورۆز
+print(kmr_months[0][1])  # Output: Newroz
 ```
 
-### All Dialect Variant Examples
+### Other Kurdish Dialect Variants
+
+You can dynamically switch Kurdish month-name variants to format dates in other standard dialects.
 
 ```python
 from pyroj import CalendarKind, format_calendar_date
@@ -175,59 +178,45 @@ from pyroj import CalendarKind, format_calendar_date
 # Syriac (KMR)
 print(format_calendar_date(kd, "%B", calendar=CalendarKind.KURDISH, locale="kmr", kurdish_variant="syriac"))
 
-# Kalhori / Southern Kurdish
-print(format_calendar_date(kd, "%B", calendar=CalendarKind.KURDISH, locale="sdh", kurdish_variant="sdh_kelhuri"))
-
 # Laki
 print(format_calendar_date(kd, "%B", calendar=CalendarKind.KURDISH, locale="lki", kurdish_variant="lki_laki"))
 
 # Hawrami / Gorani
 print(format_calendar_date(kd, "%B", calendar=CalendarKind.KURDISH, locale="hac", kurdish_variant="hac_hawrami"))
 
+# Kalhuri / Southern Kurdish
+print(format_calendar_date(kd, "%B", calendar=CalendarKind.KURDISH, locale="sdh", kurdish_variant="sdh_kelhuri"))
+
 # Zazaki
 print(format_calendar_date(kd, "%B", calendar=CalendarKind.KURDISH, locale="zza", kurdish_variant="zza_zazaki"))
 ```
 
-### Multiple Names For One Month (Explicit Example)
+### Gregorian, Persian, Arabic, and Turkish Formatting
+
+Because `pyroj` operates dynamically, you can freely convert your initialized `KurdishDate` into Gregorian, Persian, or Islamic tuples, and format them directly into Persian, Arabic, and Turkish native text locales.
 
 ```python
 from datetime import date
-from pyroj import CalendarKind, KurdishDate, format_calendar_date
+from pyroj import CalendarKind, KurdishDate, LocaleId, format_calendar_date
 
-kd = KurdishDate.from_gregorian(date(2026, 3, 24))  # Kurdish month index 1
+kd = KurdishDate(2726, 1, 1) # March 21, 2026
 
-# Zazaki table in KMR family (Latin)
-print(
-    format_calendar_date(
-        kd,
-        "%B",
-        calendar=CalendarKind.KURDISH,
-        locale="zza",
-        kurdish_variant="zza_zazaki",
-    )
-)
-# Output: Nîsanê/Lîzan
+# Point Conversions
+print(kd.to_gregorian()) # Output: 2026-03-21
+print(kd.to_persian())   # Output: (1405, 1, 1)
+print(kd.to_islamic())   # Output: (1447, 10, 2)
 
-# Zazaki table in CKB family (Arabic script)
-print(
-    format_calendar_date(
-        kd,
-        "%B",
-        calendar=CalendarKind.KURDISH,
-        locale="ckb",
-        kurdish_variant="zza_zazaki",
-    )
-)
-# Output: نیسانە/لیزان
+# Formatting in Persian Native Locale
+print(format_calendar_date(kd, "%A, %d %B", calendar=CalendarKind.PERSIAN, locale=LocaleId.FA))
+# Output: شنبه, 01 فروردین
 
-# Fetching all alternative valid names natively from the Locale cache
-from pyroj.locales import get_locale, LocaleId, CalendarKind
-loc = get_locale(LocaleId.KMR)
-zazaki_months = loc.names(CalendarKind.KURDISH).months
+# Formatting in Arabic Native Locale 
+print(format_calendar_date(kd, "%A, %d %B", calendar=CalendarKind.ISLAMIC, locale=LocaleId.AR))
+# Output: السبت, 02 شوّال
 
-# The third Zazaki month (index 2) has multiple alternative names
-print(zazaki_months[2])
-# Output: ('Hezîran', 'Vartvar', 'Amano Verên', 'Amaniya Verêne')
+# Formatting Gregorian in Turkish Locale
+print(format_calendar_date(kd, "%A, %d %B %Y", calendar=CalendarKind.GREGORIAN, locale=LocaleId.TR))
+# Output: Cumartesi, 21 Mart 2026
 ```
 
 ### Detailed DateTime Locale Example
