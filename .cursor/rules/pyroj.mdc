@@ -1,31 +1,39 @@
 ---
-description: Pyroj v2 — Python datetime-only calendar library conventions
-globs: pyroj/**/*.py
-alwaysApply: false
+description: Pyroj v2 — Python datetime-only calendar library development & branching conventions
+globs: pyroj/**/*.py, tests/**/*.py, docs/**/*.md, *.md
+alwaysApply: true
 ---
 
-# Pyroj development rules
+# Pyroj Development & Workflow Rules
 
-## Scope
+## 1. The Gitflow Branching Strategy & Releases
+- **NEVER** push or commit directly to the `main` branch. 
+- **Always** create an appropriately named semantic branch (e.g., `feature/xyz`, `fix/xyz`) off of explicitly the `develop` branch.
+- **Merge Progression**: `feature/*` -> `develop` -> `main`. 
+- Semantic version tags (e.g., `v1.3.1`) should be applied directly onto `main` upon release triggers.
 
-- **stdlib only** for runtime: `datetime`, `logging`, `enum`, `typing`, `dataclasses`. Implement Persian (Jalali), tabular Islamic, and Julian-day math in pure Python—no `persiantools`, `hijri`, or similar on the default code path.
-- **Security**: Never commit secrets, API keys, tokens, or personal MCP configuration. Ignore `.cursor/mcp.json` locally; use `.cursor/mcp.json.example` as a template only.
-- **Errors**: Use project-specific exceptions (`PyrojValueError`, `PyrojRangeError`) for invalid dates; mirror `datetime` behavior for valid ranges.
-- **Logging**: `logging.getLogger(__name__)`; no f-strings with secrets; DEBUG behind explicit flags.
+## 2. The Documentation-Sync Mandate
+Whenever updating modifying Python code logic (e.g. data shapes, API signatures, default arrays):
+- Corresponding test coverage **MUST** be created/expanded in the `/tests` suite.
+- User-facing references, code snippets, and `README.md` instructions **MUST** be immediately synchronized with the new APIs.
+- Locale tables (`docs/LOCALES.md` and `docs/kurdish_months.md`) must exactly match `catalog.json` array structures.
 
-## Kurdish calendar
+## 3. Testing and Formatting 
+Before finalizing branches or validating completion, execute the standard `uv` suite:
+```bash
+uv run ruff check .
+uv run ruff format .
+uv run mypy .
+uv run pytest
+```
 
-- Support **`KurdishEra`** explicitly: default solar calendar aligns with **Persian year + 1321** (same as legacy `Rojjmer` and the `KurdishDate` TypeScript reference in this monorepo). Do not silently mix with the **612 BCE / Nineveh** year count from historical literature—expose as a separate era if implemented.
-- Weekday naming: Kurdish week starts **Saturday** in traditional usage; align with tests and `KurdishDate` locale tables.
+## 4. Architectural Scope 
+- **Python stdlib only** for runtime dependencies: `datetime`, `logging`, `enum`, `typing`, `dataclasses`. Implement Persian (Jalali), tabular Islamic, and Julian-day mathematics purely in Python without external libraries.
+- Prefer small pure functions for JDN conversions in `_core.convert`.
+- **Security**: Never commit secrets, API keys, or `.cursor/mcp.json`. 
+- **Errors**: Strict adherence to throwing `PyrojValueError` or `PyrojRangeError` mirroring `datetime`.
 
-## Style
-
-- PEP 8, type hints on public APIs, docstrings on public modules/classes/functions.
-- Prefer small pure functions for JDN conversion; avoid a single 2000-line module.
-
-## References
-
-- `docs/ARCHITECTURE.md` — design.
-- `pyroj/locales/catalog.json` — locale month/weekday strings.
-- `docs/REFACTOR_TASKMASTER.json` — canonical roadmap and machine-readable tasks.
-- `docs/CALCULATION_METHODS.md` — detailed conversion formulas and worked examples for researchers.
+## 5. Kurdish Calendar Definitions
+- Support **`KurdishEra`** cleanly: `SOLAR_PERSIAN_OFFSET` (Jalali + 1321) versus `FALL_OF_NINEVEH` (Jalali + 1233).
+- Weekdays: Kurdish/Persian week inherently begins on **Saturday**. Align cleanly.
+- Alternative Names: Use `tuple[tuple[str, ...], ...]` where index `[0]` corresponds strictly to the canonical fallback month name.
