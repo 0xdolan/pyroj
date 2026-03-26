@@ -60,3 +60,19 @@ def test_kurdish_to_from_jdn_round_trip() -> None:
     jdn = kd.to_jdn()
     out = KurdishDate.from_jdn(jdn)
     assert out == kd
+
+
+def test_kurdish_today_and_now() -> None:
+    from datetime import timezone
+
+    from pyroj import KurdishDateTime
+
+    today = KurdishDate.today()
+    assert today.year > 2700
+
+    now = KurdishDateTime.now()
+    assert now.year > 2700
+
+    utc_now = KurdishDateTime.now(tz=timezone.utc)
+    assert utc_now.tzinfo == timezone.utc
+    assert utc_now.year > 2700

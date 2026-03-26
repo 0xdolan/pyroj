@@ -181,6 +181,15 @@ class KurdishDate(date):
         """Construct when ``year`` is already the Kurdish solar year."""
         return cls(year, month, day, era=era)
 
+    @classmethod
+    def today(
+        cls: type[_TDate],
+        *,
+        era: KurdishEra = KurdishEra.SOLAR_PERSIAN_OFFSET,
+    ) -> _TDate:
+        """Return the current local date."""
+        return cls.from_gregorian(date.today(), era=era)
+
     def to_gregorian(self) -> date:
         """Convert to a proleptic Gregorian :class:`datetime.date`."""
         return date(super().year, super().month, super().day)
@@ -377,6 +386,36 @@ class KurdishDateTime(datetime):
         if not isinstance(dt, datetime):
             raise PyrojValueError("dt must be datetime.datetime")
         return cls(_gregorian_datetime=dt, era=era)
+
+    @classmethod
+    def now(
+        cls: type[_TDateTime],
+        tz: tzinfo | None = None,
+        *,
+        era: KurdishEra = KurdishEra.SOLAR_PERSIAN_OFFSET,
+    ) -> _TDateTime:
+        """Return the current local date and time."""
+        return cls.from_gregorian(datetime.now(tz=tz), era=era)
+
+    @classmethod
+    def utcnow(
+        cls: type[_TDateTime],
+        *,
+        era: KurdishEra = KurdishEra.SOLAR_PERSIAN_OFFSET,
+    ) -> _TDateTime:
+        """Return the current UTC date and time."""
+        from datetime import timezone
+
+        return cls.from_gregorian(datetime.now(tz=timezone.utc), era=era)
+
+    @classmethod
+    def today(
+        cls: type[_TDateTime],
+        *,
+        era: KurdishEra = KurdishEra.SOLAR_PERSIAN_OFFSET,
+    ) -> _TDateTime:
+        """Return the current local datetime."""
+        return cls.now(era=era)
 
     def to_gregorian(self) -> datetime:
         return datetime(

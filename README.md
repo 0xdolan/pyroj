@@ -45,6 +45,14 @@ kd_native = KurdishDate(2726, 1, 3)
 print(kd.to_gregorian())          # Output: 2026-03-23
 print(kd.to_persian())            # Output: (1405, 1, 3)
 print(kd.to_islamic())            # Output: (1447, 10, 4)
+
+# 4. Get the current exact Kurdish Local Time or Timezone-Aware UTC Time
+from datetime import timezone
+from pyroj.kurdish import KurdishDateTime
+
+print(KurdishDate.today())                        # Returns local current date e.g. 2726-01-05
+print(KurdishDateTime.now())                      # Returns local current datetime e.g. 2726-01-05 15:30:22
+print(KurdishDateTime.now(tz=timezone.utc))       # Returns timezone-aware current UTC time
 ```
 
 ### Advanced Date Mathematics
